@@ -19,17 +19,19 @@
     }
 
     :root {
-      --bg: #050810;
-      --bg2: #080c18;
-      --surface: #0d1321;
-      --surface2: #111827;
-      --border: rgba(255,255,255,0.06);
+      --bg: #090f24;
+      --bg2: #140f31;
+      --surface: rgba(16, 22, 44, 0.76);
+      --surface2: rgba(22, 31, 58, 0.88);
+      --border: rgba(255,255,255,0.10);
       --border-accent: rgba(94,234,212,0.25);
       
       --teal: #5eead4;
       --teal-dark: #14b8a6;
       --blue: #60a5fa;
       --purple: #a78bfa;
+      --pink: #f472b6;
+      --amber: #fbbf24;
       --text: #f1f5f9;
       --text-muted: #64748b;
       --text-subtle: #94a3b8;
@@ -46,12 +48,12 @@
 
     html {
       scroll-behavior: smooth;
-      background: var(--bg);
+      background: linear-gradient(130deg, #111b41 0%, #150f2f 55%, #1c2c5d 100%);
     }
 
     body {
       font-family: var(--font-body);
-      background: var(--bg);
+      background: linear-gradient(130deg, #111b41 0%, #150f2f 55%, #1c2c5d 100%);
       color: var(--text);
       overflow-x: hidden;
       line-height: 1.6;
@@ -63,12 +65,31 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(94,234,212,0.1), transparent 32%),
-        radial-gradient(circle at 18% 16%, rgba(96,165,250,0.12), transparent 25%),
-        radial-gradient(circle at 82% 26%, rgba(167,139,250,0.12), transparent 30%);
+        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(94,234,212,0.16), transparent 34%),
+        radial-gradient(circle at 18% 16%, rgba(96,165,250,0.2), transparent 32%),
+        radial-gradient(circle at 82% 26%, rgba(167,139,250,0.18), transparent 36%),
+        radial-gradient(circle at 50% 110%, rgba(244,114,182,0.16), transparent 35%);
       pointer-events: none;
       z-index: -3;
       transition: background-position 0.2s ease;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      width: 48vw;
+      height: 48vw;
+      max-width: 680px;
+      max-height: 680px;
+      right: -16vw;
+      top: 42%;
+      border-radius: 40% 60% 60% 40%;
+      background: conic-gradient(from 90deg, rgba(94,234,212,0.2), rgba(96,165,250,0.16), rgba(167,139,250,0.22), rgba(244,114,182,0.16), rgba(94,234,212,0.2));
+      filter: blur(70px);
+      opacity: 0.55;
+      animation: morphBlob 16s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -2;
     }
 
     .scene-bg {
@@ -429,6 +450,7 @@
         linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
       background-size: 60px 60px;
       mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+      opacity: 0.8;
     }
 
     .hero-inner {
@@ -541,6 +563,7 @@
       padding: 40px 32px;
       text-align: center;
       border-right: 1px solid var(--border);
+      backdrop-filter: blur(6px);
     }
 
     .stat-item:last-child { border-right: none; }
@@ -589,10 +612,11 @@
     .service-card {
       background: var(--surface);
       padding: 40px 36px;
-      transition: background 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.06);
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.35s ease, background 0.3s, box-shadow 0.35s ease;
+      backdrop-filter: blur(14px);
     }
 
     .service-card::after {
@@ -616,7 +640,7 @@
 
     .service-icon {
       width: 52px; height: 52px;
-      background: rgba(94,234,212,0.08);
+      background: linear-gradient(145deg, rgba(94,234,212,0.14), rgba(167,139,250,0.16));
       border: 1px solid rgba(94,234,212,0.15);
       border-radius: var(--radius);
       display: flex;
@@ -661,6 +685,7 @@
       overflow: hidden;
       transition: border-color 0.3s, transform 0.3s;
       position: relative;
+      backdrop-filter: blur(12px);
     }
 
     .portfolio-card:hover {
@@ -692,6 +717,17 @@
       font-size: 56px;
       position: relative;
       overflow: hidden;
+    }
+
+    .portfolio-thumb::after {
+      content: '';
+      position: absolute;
+      inset: -25% -10%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.22), transparent 42%),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0 3px, transparent 3px 14px);
+      opacity: 0.65;
+      transform: rotate(-5deg);
     }
 
     .portfolio-thumb.logistica { background: linear-gradient(135deg, #0d2137, #0d3a2a); }
@@ -768,6 +804,7 @@
       display: flex;
       gap: 24px;
       transition: border-color 0.3s;
+      backdrop-filter: blur(10px);
     }
 
     .process-step:hover {
@@ -820,6 +857,7 @@
       transition: all 0.2s;
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(10px);
     }
 
     .tech-item:hover {
@@ -876,6 +914,7 @@
       border-radius: var(--radius-lg);
       padding: 32px;
       position: relative;
+      backdrop-filter: blur(10px);
     }
 
     .testimonial-card::before {
@@ -947,6 +986,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
+      backdrop-filter: blur(10px);
     }
 
     .faq-q {
@@ -1017,6 +1057,46 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .partners-strip {
+      background: linear-gradient(120deg, rgba(94,234,212,0.08), rgba(167,139,250,0.1));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .partners-inner {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .partners-inner span {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+    }
+
+    .partners-inner img {
+      width: 72px;
+      height: 30px;
+      object-fit: contain;
+      opacity: 0.86;
+      filter: drop-shadow(0 0 8px rgba(94,234,212,0.12));
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .partners-inner img:hover {
+      transform: translateY(-3px) scale(1.04);
+      opacity: 1;
     }
 
     .cta-box::after {
@@ -1251,6 +1331,11 @@
       to { transform: translateX(120px); }
     }
 
+    @keyframes morphBlob {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); border-radius: 40% 60% 60% 40%; }
+      50% { transform: translate3d(-40px, -30px, 0) rotate(18deg) scale(1.08); border-radius: 62% 38% 42% 58%; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
@@ -1331,6 +1416,18 @@
 
     <div class="hero-scroll">Scroll</div>
   </section>
+
+  <div class="partners-strip">
+    <div class="container partners-inner">
+      <span>Tehnologii folosite în proiecte reale</span>
+      <img src="assets/brands/android.png" alt="Android">
+      <img src="assets/brands/kotlin.png" alt="Kotlin">
+      <img src="assets/brands/firebase.png" alt="Firebase">
+      <img src="assets/brands/ml-kit.png" alt="ML Kit">
+      <img src="assets/brands/google-cloud.png" alt="Google Cloud">
+      <img src="assets/brands/tensorflow.png" alt="TensorFlow">
+    </div>
+  </div>
 
   <!-- STATS BAR -->
   <div class="stats-bar">
@@ -1863,7 +1960,7 @@
     });
 
     // 3D tilt hover cards
-    document.querySelectorAll('.service-card, .portfolio-card, .testimonial-card').forEach(card => {
+    document.querySelectorAll('.service-card, .portfolio-card, .testimonial-card, .tech-item, .process-step').forEach(card => {
       card.addEventListener('pointermove', (event) => {
         const rect = card.getBoundingClientRect();
         const x = (event.clientX - rect.left) / rect.width;
