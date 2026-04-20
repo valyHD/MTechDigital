@@ -1,0 +1,212 @@
+/* ========== Cards ========== */
+.screen-site .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  flex: 0 0 280px;
+}
+
+.card, .feature-card, .panel {
+  border-radius: 16px;
+  border: 1px solid rgba(0,229,255,.18);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+  box-shadow: 0 8px 28px rgba(0,0,0,.28),
+              inset 0 1px 0 rgba(255,255,255,.06);
+  overflow: hidden;
+}
+
+.card > *:first-child,
+.feature-card > *:first-child,
+.panel > *:first-child {
+  margin-top: 0;
+}
+
+.card > *:last-child,
+.feature-card > *:last-child,
+.panel > *:last-child {
+  margin-bottom: 0;
+}
+
+.screen-site .card ul {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.screen-site .card ul li {
+  position: relative;
+  padding-left: 16px;
+  margin: 0.35rem 0;
+  opacity: 0.95;
+}
+
+.screen-site .card ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* Card color variants */
+.screen-site .card.c1 ul li {
+  color: #bffcff;
+}
+
+.screen-site .card.c1 ul li::before {
+  background: #00e5ff;
+}
+
+.screen-site .card.c2 ul li {
+  color: #ffe7b8;
+}
+
+.screen-site .card.c2 ul li::before {
+  background: #ffb300;
+}
+
+.screen-site .card.c3 ul li {
+  color: #c9ffd8;
+}
+
+.screen-site .card.c3 ul li::before {
+  background: #24ffa7;
+}
+
+/* Card CTAs */
+.screen-site .card .cta,
+.screen-site .card .btn-bar,
+.screen-site .card .btn-row,
+.screen-site .card .actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 14px;
+  gap: 10px;
+}
+
+.screen-site .card .glass-btn {
+  pointer-events: auto !important;
+  min-width: 56%;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.screen-site .card .cta .glass-btn {
+  min-width: 180px;
+}
+
+.screen-site .demos .card,
+.screen-site .plans .card,
+.screen-site .stories .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 64px;
+}
+
+/* ========== Electric Border Effects ========== */
+.screen-site .card.eb {
+  --eb-pad: 16px;
+  position: relative;
+  overflow: visible;
+}
+
+.eb-layers {
+  position: absolute;
+  top: calc(-1 * var(--eb-pad));
+  left: calc(-1 * var(--eb-pad));
+  right: calc(-1 * var(--eb-pad));
+  bottom: calc(-1 * var(--eb-pad));
+  z-index: 2;
+  pointer-events: none !important;
+  inset: calc(-1 * var(--eb-pad));
+}
+
+.eb-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform: none !important;
+  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.55))
+          drop-shadow(0 0 10px rgba(184, 92, 255, 0.45));
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  pointer-events: none !important;
+}
+
+.eb-glow,
+.eb-glow2 {
+  position: absolute;
+  inset: calc(-1 * var(--eb-pad) - 6px);
+  border-radius: inherit;
+  border: 2px solid transparent;
+  mix-blend-mode: screen;
+  filter: blur(14px);
+  opacity: 0;
+  transition: opacity 0.22s ease-out;
+  pointer-events: none !important;
+}
+
+.eb-glow {
+  box-shadow: inset 0 0 24px 2px rgba(0, 229, 255, 0.35),
+              0 0 26px 2px rgba(0, 229, 255, 0.25);
+}
+
+.eb-glow2 {
+  box-shadow: inset 0 0 28px 2px rgba(184, 92, 255, 0.3),
+              0 0 30px 2px rgba(184, 92, 255, 0.22);
+}
+
+.screen-site .card.eb:hover .eb-canvas,
+.screen-site .card.eb.is-hover .eb-canvas {
+  opacity: 0.95;
+}
+
+.screen-site .card.eb:hover .eb-glow,
+.screen-site .card.eb:hover .eb-glow2,
+.screen-site .card.eb.is-hover .eb-glow,
+.screen-site .card.eb.is-hover .eb-glow2,
+.screen-site .card.eb:focus-within .eb-glow,
+.screen-site .card.eb:focus-within .eb-glow2 {
+  opacity: 0.9;
+}
+
+.screen-site .card.eb h3 {
+  color: #dffbff;
+  text-shadow: 0 0 14px rgba(0, 229, 255, 0.18);
+}
+
+.screen-site .card.eb > *:not(.eb-layers) {
+  position: relative;
+  z-index: 2;
+}
+
+.screen-site .card.eb:hover,
+.screen-site .card.eb.is-hover {
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eb-canvas {
+    display: none;
+  }
+  .eb-glow,
+  .eb-glow2 {
+    opacity: 0.25;
+    filter: blur(4px);
+  }
+}

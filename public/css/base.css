@@ -1,0 +1,67 @@
+/* ========== Variables & Base ========== */
+:root {
+  --neon-blue: #00e5ff;
+  --bg1: #081525;
+  --bg2: #0a1324;
+  --bg3: #091a33;
+  --eb-blue: #00e5ff;
+  --eb-purple: #b85cff;
+  --screen-h: 100dvh;
+  --portal-z: 2147483000;
+  --modal-z: 2147483400;
+}
+
+@supports not (height: 100dvh) {
+  :root { --screen-h: 100vh; }
+}
+
+@supports (height: 100svh) {
+  :root { --screen-h: 100svh; }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable both-edges;
+  overflow-anchor: none;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui;
+  color: #eaf6ff;
+  overflow-x: hidden;
+  background: #071420;
+  overscroll-behavior: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background: 
+    radial-gradient(120% 140% at 15% -20%, rgba(0, 229, 255, 0.25), transparent 50%),
+    radial-gradient(120% 160% at 120% 120%, rgba(184, 92, 255, 0.20), transparent 50%),
+    linear-gradient(180deg, var(--bg1), var(--bg2) 50%, var(--bg3) 100%);
+}
+
+a {
+  text-decoration: none;
+}
+
+@supports not (scrollbar-gutter: stable) {
+  html { overflow-y: scroll; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

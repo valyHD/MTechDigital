@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Termeni și Condiții • MTECH Digital</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --deep-1:#0b1220; --deep-2:#0f1628; --neon-blue:#00e5ff; --neon-purple:#b85cff;
+      --text:#e5f6ff; --muted:#9fb1c9; --ring:rgba(0,229,255,.35);
+      --card:rgba(255,255,255,.04); --card-b:rgba(255,255,255,.10); --max:1100px; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--deep-1),var(--deep-2));color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:#a3cef1;text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:28px 20px 40px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+    .brand{font-family:Orbitron, sans-serif; font-weight:800; letter-spacing:.02em}
+    nav a{opacity:.9;margin-left:14px}
+    h1{font:800 clamp(28px,3.8vw,44px)/1.15 Orbitron, Inter, sans-serif; letter-spacing:-.01em; text-align:left; margin:18px 0 8px}
+    .lead{opacity:.9;margin:0 0 18px;max-width:72ch}
+    .card{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:18px;margin:16px 0}
+    h2{font-weight:800;margin:18px 0 8px}
+    ul{margin:8px 0 16px 20px}
+    footer{margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06);opacity:.9;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--card-b);background:rgba(255,255,255,.03)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">MTECH DIGITAL</div>
+      <nav>
+        <a href="index.html">Acasă</a>
+        <a href="companii.html">Companii</a>
+        <a href="dezvoltatori.html">Dezvoltatori</a>
+      </nav>
+    </header>
+
+    <h1>Termeni și Condiții</h1>
+    <p class="lead">Prin utilizarea platformei noastre accepți termenii de mai jos. Te rugăm să îi citești cu atenție.</p>
+
+    <div class="card">
+      <h2>1. Servicii</h2>
+      <p>Platforma oferă demo-uri, licențe software, listare aplicații, intermediere între companii și dezvoltatori și servicii conexe.</p>
+      <h2>2. Conturi</h2>
+      <p>Ești responsabil pentru păstrarea confidențialității credențialelor și pentru activitatea desfășurată sub contul tău.</p>
+      <h2>3. Conținutul utilizatorului</h2>
+      <ul>
+        <li>Ești titularul drepturilor asupra materialelor încărcate; ne acorzi o licență limitată pentru hosting și distribuire în scopul oferirii serviciilor.</li>
+        <li>Este interzis conținutul ilegal, dăunător sau care încalcă drepturile altora.</li>
+      </ul>
+      <h2>4. Plăți și licențe</h2>
+      <p>Termenii de preț, suport și SLA se comunică în ofertă/contract. Licențele sunt netransferabile, cu limitări indicate în contract.</p>
+      <h2>5. Securitate & disponibilitate</h2>
+      <p>Folosim infrastructură Firebase/Google Cloud; pot exista perioade de mentenanță. Depunem eforturi rezonabile pentru uptime și siguranță.</p>
+      <h2>6. Limitare de răspundere</h2>
+      <p>În măsura maximă permisă de lege, răspunderea noastră este limitată la sumele plătite pentru serviciile afectate în ultimele 12 luni.</p>
+      <h2>7. Reziliere</h2>
+      <p>Ne rezervăm dreptul de a suspenda/închide conturi care încalcă termenii sau legislația. Poți solicita oricând închiderea contului.</p>
+      <h2>8. Modificări</h2>
+      <p>Putem actualiza acești termeni; versiunea curentă va fi disponibilă pe această pagină, cu data ultimei actualizări.</p>
+      <h2>9. Contact</h2>
+      <p>Întrebări? <a href="contact.html">Contactează-ne</a>.</p>
+    </div>
+
+    <footer>
+      <div class="pill">© <span id="year"></span> MTECH Digital</div>
+      <div>
+        <a href="terms.html">Termeni</a> ·
+        <a href="privacy.html">Confidențialitate</a> ·
+        <a href="contact.html">Contact</a>
+      </div>
+    </footer>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

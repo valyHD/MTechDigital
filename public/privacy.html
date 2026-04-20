@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confidențialitate • MTECH Digital</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --deep-1:#0b1220; --deep-2:#0f1628; --neon-blue:#00e5ff; --neon-purple:#b85cff;
+      --text:#e5f6ff; --muted:#9fb1c9; --ring:rgba(0,229,255,.35);
+      --card:rgba(255,255,255,.04); --card-b:rgba(255,255,255,.10); --max:1100px; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--deep-1),var(--deep-2));color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:#a3cef1;text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:28px 20px 40px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+    .brand{font-family:Orbitron, sans-serif; font-weight:800; letter-spacing:.02em}
+    nav a{opacity:.9;margin-left:14px}
+    h1{font:800 clamp(28px,3.8vw,44px)/1.15 Orbitron, Inter, sans-serif; letter-spacing:-.01em; text-align:left; margin:18px 0 8px}
+    .lead{opacity:.9;margin:0 0 18px;max-width:72ch}
+    .card{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:18px;margin:16px 0}
+    h2{font-weight:800;margin:18px 0 8px}
+    ul{margin:8px 0 16px 20px}
+    footer{margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06);opacity:.9;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--card-b);background:rgba(255,255,255,.03)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">MTECH DIGITAL</div>
+      <nav>
+        <a href="index.html">Acasă</a>
+        <a href="companii.html">Companii</a>
+        <a href="dezvoltatori.html">Dezvoltatori</a>
+      </nav>
+    </header>
+
+    <h1>Politica de Confidențialitate</h1>
+    <p class="lead">Îți respectăm datele. Mai jos explicăm ce colectăm, de ce, cum le folosim și care sunt drepturile tale.</p>
+
+    <div class="card">
+      <h2>1. Ce date colectăm</h2>
+      <ul>
+        <li>Date de cont: nume, email, parolă (hash-uită).</li>
+        <li>Date operaționale: loguri autentificare, erori, evenimente de produs.</li>
+        <li>Fișiere încărcate voluntar (ex: APK, imagini, clipuri, documente).</li>
+        <li>Cookie-uri strict necesare pentru autentificare și securitate.</li>
+      </ul>
+      <h2>2. De ce le colectăm</h2>
+      <ul>
+        <li>Oferirea serviciilor (hosting demo, moderare, licențiere, plăți).</li>
+        <li>Securitate, prevenirea abuzului și conformitate legală.</li>
+        <li>Îmbunătățirea produsului și suport tehnic.</li>
+      </ul>
+      <h2>3. Temelia legală</h2>
+      <p>Executarea contractului, interes legitim (securitate/îmbunătățiri) și consimțământ (unde este cazul).</p>
+      <h2>4. Stocare & transfer</h2>
+      <p>Datele sunt găzduite în infrastructură Google Cloud / Firebase. Folosim criptare în tranzit și reguli de acces pe bază de roluri.</p>
+      <h2>5. Drepturile tale (GDPR)</h2>
+      <ul>
+        <li>Acces, rectificare, ștergere, restricționare, portabilitate, opoziție.</li>
+        <li>Retragerea consimțământului (unde e baza legală).</li>
+        <li>Plângere la ANSPDCP.</li>
+      </ul>
+      <h2>6. Perioada de păstrare</h2>
+      <p>Păstrăm datele cât timp ai cont activ sau cât este necesar pentru obligații legale/contractuale.</p>
+      <h2>7. Contact</h2>
+      <p>Pentru solicitări, scrie-ne la <a href="mailto:mtechdigital.noreply@gmail.com">mtechdigital.noreply@gmail.com</a> sau vezi pagina <a href="contact.html">Contact</a>.</p>
+    </div>
+
+    <footer>
+      <div class="pill">© <span id="year"></span> MTECH Digital</div>
+      <div>
+        <a href="terms.html">Termeni</a> ·
+        <a href="privacy.html">Confidențialitate</a> ·
+        <a href="contact.html">Contact</a>
+      </div>
+    </footer>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

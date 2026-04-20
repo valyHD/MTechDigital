@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "@devicefarmer/adbkit-apkreader": "^3.2.4",
+    "app-info-parser": "^1.1.6",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.6.0",
+    "nodemailer": "^7.0.10",
+    "uuid": "^13.0.0"
+  }
+}

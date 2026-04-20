@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Moderare aplicatii • Mtech Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0e1a; --card:rgba(255,255,255,.06); --muted:#8b9cb8; --text:#e5f6ff;
+      --blue:#00e5ff; --vio:#b85cff; --border:rgba(255,255,255,.18);
+      --ring:rgba(0,229,255,.35);
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui;background:radial-gradient(ellipse at top,#0f1624 0%,#0a0e1a 100%);color:var(--text);margin:0}
+    a{color:#9fe8ff}
+    .wrap{max-width:1180px;margin:0 auto;padding:24px}
+    .top{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .top h1{margin:0;font-size:22px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--blue);background:transparent;color:var(--blue);cursor:pointer;text-decoration:none}
+    .btn.primary{background:linear-gradient(135deg,var(--blue),var(--vio));color:#06101c;border:none}
+    .btn.ghost{border-color:var(--border);color:var(--text)}
+    .btn.warn{border-color:#ffb3b3;color:#ffb3b3}
+    .filters .btn{border-color:var(--border);color:#cfe7ff}
+    .filters .btn.active{border-color:var(--blue);color:var(--blue)}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .card h3{margin:0 0 6px}
+    .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .tag{font-size:11px;padding:6px 10px;border-radius:999px;border:1px solid rgba(0,229,255,.25);color:#9fe8ff;background:rgba(0,229,255,.06);display:inline-block;margin:4px 6px 0 0}
+    .empty{padding:14px;border:1px dashed var(--border);border-radius:12px;color:#cfe7ff}
+
+    /* DETAIL PANE (drawer) */
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:none;z-index:1000}
+    .drawer{position:fixed;top:0;right:0;width:min(760px,100%);height:100%;background:rgba(15,22,36,.96);
+      border-left:1px solid rgba(0,229,255,.2);box-shadow:-20px 0 60px rgba(0,0,0,.5);
+      transform:translateX(100%);transition:transform .25s ease;z-index:1001;overflow:auto}
+    .drawer.open{transform:translateX(0)}
+    .drawer-backdrop.show{display:block}
+    .drawer .head{position:sticky;top:0;background:rgba(10,14,26,.9);backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(0,229,255,.18);padding:14px 18px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .drawer .body{padding:16px 18px 28px}
+
+    .sec{margin-bottom:18px}
+    .sec h4{margin:0 0 10px;color:#9fe8ff;font-size:15px}
+    .kv{display:grid;grid-template-columns:180px 1fr;gap:8px 14px}
+    .kv div{padding:8px 10px;border:1px solid rgba(0,229,255,.12);border-radius:10px;background:rgba(0,229,255,.04)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .list{padding-left:18px;margin:0}
+    .list li{margin:6px 0}
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+    .gallery img{width:100%;height:110px;object-fit:cover;border-radius:10px;border:1px solid rgba(0,229,255,.22);cursor:pointer}
+    .media-block{display:grid;grid-template-columns:1fr;gap:12px}
+    .media-block video,.media-block iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:12px;outline:1px solid rgba(0,229,255,.2)}
+    textarea.reason{width:100%;border-radius:10px;border:1px solid rgba(0,229,255,.25);background:rgba(0,229,255,.06);color:var(--text);padding:10px}
+
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--ring);background:rgba(0,229,255,.08);color:#9fe8ff;font-size:12px}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .subtle{font-size:12px;color:#a6cbe6}
+    #needsBox.show { display:block !important; }
+#needsBox textarea.reason { min-height: 96px; }
+.custom-cursor { display: none !important; }
+body { cursor: auto !important; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Moderare aplicatii</h1>
+    <div class="row">
+      <a href="dezvoltatori.html" class="btn ghost">← Inapoi</a>
+      <button id="btnLogin" class="btn">Conecteaza-te</button>
+    </div>
+  </div>
+
+  <div class="row filters" role="tablist" style="margin-bottom:12px">
+    <button class="btn active" data-status="pending">In asteptare</button>
+    <button class="btn" data-status="approved">Aprobate</button>
+    <button class="btn" data-status="rejected">Respins</button>
+    <button class="btn" data-status="needs-fix">Needs-fix</button>
+  </div>
+
+  <p id="info" class="muted">Verific drepturi…</p>
+  <div id="list" class="grid"></div>
+</div>
+
+<!-- Drawer detaliu -->
+<div id="backdrop" class="drawer-backdrop"></div>
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="head">
+    <div>
+      <div id="dTitle" style="font-weight:800"></div>
+      <div id="dMeta" class="muted" style="font-size:13px"></div>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="btnClose">Inchide</button>
+    </div>
+  </div>
+  <div class="body">
+    <div class="sec">
+      <div class="actions">
+        <button class="btn primary" id="btnApprove">Aproba</button>
+        <button class="btn" id="btnNeedsFix">Needs-fix</button>
+        <button class="btn warn" id="btnReject">Respinge</button>
+        <button class="btn" id="btnMovePending" title="Muta inapoi in Pending">Pending</button>
+        <span id="lastFeedback" class="subtle"></span>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span id="apkBadge" class="pill">APK: —</span>
+      <button id="btnPreviewApk" class="btn btn-outline">⬇️ Descarca (preview)</button>
+
+      <a id="btnGoOwner" class="btn ghost" target="_blank" rel="noopener">Profil autor</a>
+    </div>
+
+    <div class="sec">
+      <h4>Media</h4>
+      <div class="media-block" id="mediaBlock">
+        <!-- Video MP4 / YouTube -->
+      </div>
+      <div class="gallery" id="gallery"></div>
+      <div class="subtle" id="mediaMeta"></div>
+    </div>
+
+    <div class="sec">
+      <h4>Descriere</h4>
+      <div class="kv">
+        <div>Titlu</div><div id="kTitle">—</div>
+        <div>Categorie</div><div id="kCategory">—</div>
+        <div>Scurt</div><div id="kShort">—</div>
+        <div>Tag-uri</div><div id="kTags">—</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h4>APK & versiuni</h4>
+      <div class="kv">
+        <div>Package</div><div id="kPkg">—</div>
+        <div>Version Name</div><div id="kVname">—</div>
+        <div>Version Code</div><div id="kVcode">—</div>
+        <div>Dimensiune</div><div id="kApkSize">—</div>
+        <div>SHA-256</div><div id="kSha">—</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h4>Demo pack</h4>
+      <div class="kv">
+        <div>Quick Start</div><div><ol id="kQS" class="list"></ol></div>
+        <div>Permisiuni & motiv</div><div><ul id="kPerms" class="list"></ul></div>
+        <div>Functionalitati</div><div><ul id="kFeatures" class="list"></ul></div>
+        <div>Limitari</div><div><ul id="kLimits" class="list"></ul></div>
+        <div>Limbi UI</div><div id="kLocales">—</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h4>Business</h4>
+      <div class="kv">
+        <div>Pret de la (EUR)</div><div id="kPrice">—</div>
+        <div>SLA raspuns (h)</div><div id="kSla">—</div>
+        <div>Customizari</div><div id="kCust">—</div>
+      </div>
+    </div>
+
+    <div id="needsBox" class="sec" style="display:none">
+      <h4>Trimite feedback Needs-fix</h4>
+      <textarea id="nfReason" class="reason" rows="3" placeholder="Ex: Video > 180s; adauga Quick Start cu 3 pasi..."></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="btn primary" id="nfSend">Trimite feedback</button>
+        <button class="btn ghost" id="nfCancel">Renunta</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script type="module">
+  // --- Firebase imports (consolidate intr-un singur <script type="module">) ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,   // <— ADĂUGAT
+    signOut               // <— dacă îl folosești
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore,
+    doc, getDoc, setDoc, serverTimestamp,
+    collection, query, where, orderBy, getDocs, limit,
+    updateDoc, increment, addDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import {
+    getStorage, ref, getDownloadURL    // <— doar dacă folosești Storage în admin
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+  const app = initializeApp({
+    apiKey: "AIzaSyDg_P0xmt22HyVNQbFQqH9ASP68sJ0b2j8",
+    authDomain: "mtechdigital-2449f.firebaseapp.com",
+    projectId: "mtechdigital-2449f",
+    storageBucket: "mtechdigital-2449f.firebasestorage.app"
+  });
+
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+const firebaseConfig = {
+  apiKey: "AIzaSyDg_P0xmt22HyVNQbFQqH9ASP68sJ0b2j8",
+  authDomain: "mtechdigital-2449f.firebaseapp.com",
+  projectId: "mtechdigital-2449f",
+  storageBucket: "mtechdigital-2449f.firebasestorage.app",
+  messagingSenderId: "534091295733",
+  appId: "1:534091295733:web:6e12ca26abd14d5ccd8ebc"
+};
+
+
+
+// UI refs
+const info = document.getElementById('info');
+const list = document.getElementById('list');
+const btnLogin = document.getElementById('btnLogin');
+const filterBar = document.querySelector('.filters');
+let currentStatus = 'pending';
+
+btnLogin.addEventListener('click', async () => {
+  if (auth.currentUser) { await signOut(auth); return; }
+  await signInWithPopup(auth, new GoogleAuthProvider());
+});
+
+filterBar.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-status]'); if (!b) return;
+  filterBar.querySelectorAll('.btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  currentStatus = b.dataset.status;
+  if (auth.currentUser) loadApps(currentStatus);
+});
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    info.textContent = "Neautentificat.";
+    list.innerHTML = "";
+    btnLogin.textContent = "Conecteaza-te";
+    return;
+  }
+  btnLogin.textContent = "Deconecteaza-te";
+
+  // verifica admin
+  const cfgSnap = await getDoc(doc(db, 'config', 'admins'));
+  const admins = cfgSnap.exists() ? (cfgSnap.data().emails || []) : [];
+  const isAdmin = !!user.email && admins.includes(user.email);
+  if (!isAdmin) {
+    info.textContent = "Nu ai drepturi de moderare (admin).";
+    list.innerHTML = "";
+    return;
+  }
+
+  info.textContent = `Esti admin. Se incarca aplicatiile (${currentStatus})…`;
+  loadApps(currentStatus);
+});
+
+/* ===================== Helpers ===================== */
+function esc(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+function bytes(n){ if(!n && n!==0) return '—'; const u=['B','KB','MB','GB']; let i=0, v=n; while(v>=1024&&i<u.length-1){v/=1024;i++;} return `${v.toFixed( i?1:0 )} ${u[i]}`; }
+function ytEmbed(url){
+  if(!url) return null;
+  const m = String(url).match(/(?:youtu\.be\/|v=)([\w\-]{6,})/i);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+}
+function showNeedsBox() {
+  const box = D.needsBox;
+  box.classList.add('show');
+  box.style.display = 'block';
+  // focus pe textarea
+  setTimeout(() => {
+    D.nfReason?.focus();
+    D.nfReason?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 30);
+}
+
+function hideNeedsBox() {
+  D.needsBox.classList.remove('show');
+  D.needsBox.style.display = 'none';
+  D.nfReason.value = '';
+}
+
+function metaLine(app){
+  const imgs = app.media?.images?.length || app.images?.length || 0;
+  const v = app.media || {};
+  const dur = v.videoMp4Meta?.durationSec ? ` • Video: ${Math.round(v.videoMp4Meta.durationSec)}s` :
+             (v.videoMp4 ? ' • Video: MP4' : (v.videoUrl ? ' • Video: YouTube' : ''));
+  const apkMb = ((app.apk?.sizeBytes||0)/1024/1024).toFixed(1);
+  return `Imagini: ${imgs}${dur} • APK: ${apkMb} MB`;
+}
+async function issueApkUrlPreview(id){
+  const url = `https://us-central1-mtechdigital-2449f.cloudfunctions.net/issueApkUrlPreview?id=${encodeURIComponent(id)}&preview=1`;
+  const resp = await fetch(url, {
+    headers: {
+      'x-api-key':'vali',
+      'x-admin-email': auth.currentUser?.email || 'admin@mtech.ro'
+    }
+  });
+  if(!resp.ok){
+    const t = await resp.text().catch(()=>resp.statusText);
+    throw new Error(`issueApkUrlPreview ${resp.status}: ${t}`);
+  }
+  const data = await resp.json().catch(async()=>({url: await resp.text()}));
+  return data.url || data;
+}
+
+/* ===================== Cloud Functions ===================== */
+// set status
+async function callStatus(id, status, reason){
+  const url = `https://us-central1-mtechdigital-2449f.cloudfunctions.net/setAppStatus`
+            + `?id=${encodeURIComponent(id)}&status=${encodeURIComponent(status)}&reason=${encodeURIComponent(reason||"")}`;
+  const resp = await fetch(url, {
+    method: 'GET',
+    headers: { 'x-api-key':'vali', 'x-admin-email': auth.currentUser?.email || 'admin@mtech.ro' }
+  });
+  if (!resp.ok) throw new Error(`setAppStatus ${resp.status}`);
+}
+// issue signed url for APK
+async function issueApkUrl(id){
+  const url = `https://us-central1-mtechdigital-2449f.cloudfunctions.net/issueApkUrl?id=${encodeURIComponent(id)}`;
+  const resp = await fetch(url, {
+    headers: { 'x-api-key':'vali', 'x-admin-email': auth.currentUser?.email || 'admin@mtech.ro' }
+  });
+  if(!resp.ok){
+    const t = await resp.text().catch(()=>resp.statusText);
+    throw new Error(`issueApkUrl ${resp.status}: ${t}`);
+  }
+  const data = await resp.json().catch(async()=>({url: await resp.text()}));
+  return data.url || data;
+}
+
+/* ===================== Drawer (detail) ===================== */
+const drawer = document.getElementById('drawer');
+const backdrop = document.getElementById('backdrop');
+const btnClose = document.getElementById('btnClose');
+
+let currentDoc = null; // {id, data}
+
+function openDrawer(){
+  drawer.classList.add('open');
+  backdrop.classList.add('show');
+  drawer.setAttribute('aria-hidden','false');
+}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  backdrop.classList.remove('show');
+  drawer.setAttribute('aria-hidden','true');
+  document.getElementById('needsBox').style.display='none';
+  document.getElementById('nfReason').value='';
+}
+btnClose.onclick = closeDrawer;
+backdrop.onclick = closeDrawer;
+
+/* Map detail refs */
+const D = {
+  dTitle: document.getElementById('dTitle'),
+  dMeta: document.getElementById('dMeta'),
+  lastFeedback: document.getElementById('lastFeedback'),
+  apkBadge: document.getElementById('apkBadge'),
+  btnPreviewApk: document.getElementById('btnPreviewApk'),
+  btnGoOwner: document.getElementById('btnGoOwner'),
+
+  mediaBlock: document.getElementById('mediaBlock'),
+  gallery: document.getElementById('gallery'),
+  mediaMeta: document.getElementById('mediaMeta'),
+
+  kTitle: document.getElementById('kTitle'),
+  kCategory: document.getElementById('kCategory'),
+  kShort: document.getElementById('kShort'),
+  kTags: document.getElementById('kTags'),
+  kPkg: document.getElementById('kPkg'),
+  kVname: document.getElementById('kVname'),
+  kVcode: document.getElementById('kVcode'),
+  kApkSize: document.getElementById('kApkSize'),
+  kSha: document.getElementById('kSha'),
+
+  kQS: document.getElementById('kQS'),
+  kPerms: document.getElementById('kPerms'),
+  kFeatures: document.getElementById('kFeatures'),
+  kLimits: document.getElementById('kLimits'),
+  kLocales: document.getElementById('kLocales'),
+
+  kPrice: document.getElementById('kPrice'),
+  kSla: document.getElementById('kSla'),
+  kCust: document.getElementById('kCust'),
+
+  btnApprove: document.getElementById('btnApprove'),
+  btnNeedsFix: document.getElementById('btnNeedsFix'),
+  btnReject: document.getElementById('btnReject'),
+  btnMovePending: document.getElementById('btnMovePending'),
+
+  needsBox: document.getElementById('needsBox'),
+  nfReason: document.getElementById('nfReason'),
+  nfSend: document.getElementById('nfSend'),
+  nfCancel: document.getElementById('nfCancel'),
+};
+
+function renderChips(arr){ return (arr||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('') || '—'; }
+function setList(ulOrOl, items){
+  ulOrOl.innerHTML = (items&&items.length)
+    ? items.map(x=>`<li>${esc(typeof x==='string'?x:(x.text||JSON.stringify(x)))}</li>`).join('')
+    : '<li>—</li>';
+}
+function setPerms(ul, perms){
+  ul.innerHTML = (perms&&perms.length)
+    ? perms.map(p=>`<li><b>${esc(p.name||'PERM')}</b>${p.reason?` — ${esc(p.reason)}`:''}</li>`).join('')
+    : '<li>—</li>';
+}
+function openImage(url){ window.open(url, '_blank', 'noopener'); }
+
+function fillDrawer(id, a){
+  currentDoc = { id, data: a };
+
+  // header
+  D.dTitle.textContent = a.title || id;
+  const created = a.createdAt?.toDate ? a.createdAt.toDate() : null;
+  const author = a.author || 'Anonim';
+  const aEmail = a.authorEmail ? ` • ${a.authorEmail}` : '';
+  D.dMeta.textContent = `${author}${aEmail}${created?` • ${created.toLocaleString()}:`:''} ${a.status || 'pending'}`;
+
+  D.lastFeedback.textContent = a.review?.reason ? `Ultimul feedback: ${a.review.reason}` : '';
+
+  // apk pill
+  const ver = (a.apk?.versionName || a.version || '1.0');
+  D.apkBadge.textContent = `APK: v${ver} • ${bytes(a.apk?.sizeBytes)}`;
+
+  // link profil autor (pagina dev.html/ profil public)
+  if(a.ownerUid){
+    D.btnGoOwner.href = `dev.html?uid=${encodeURIComponent(a.ownerUid)}`;
+    D.btnGoOwner.textContent = 'Profil autor';
+  } else {
+    D.btnGoOwner.style.display='none';
+  }
+
+  // media: video + galerie
+  D.mediaBlock.innerHTML = '';
+  const m = a.media || {};
+  const vMp4 = m.videoMp4;
+  const vUrlEmbed = ytEmbed(m.videoUrl);
+  if (vMp4){
+    const v = document.createElement('video');
+    v.controls = true; v.playsInline = true;
+    v.src = vMp4;
+    D.mediaBlock.appendChild(v);
+  }
+  if (vUrlEmbed){
+    const ifr = document.createElement('iframe');
+    ifr.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share";
+    ifr.referrerPolicy = "no-referrer-when-downgrade";
+    ifr.src = vUrlEmbed;
+    D.mediaBlock.appendChild(ifr);
+  }
+  const imgs = (a.images || m.images || []);
+  D.gallery.innerHTML = imgs.map(u=>`<img src="${esc(u)}" alt="preview" loading="lazy" onclick="void(0)">`).join('');
+  // attach click open
+  Array.from(D.gallery.querySelectorAll('img')).forEach(img=>{
+    img.addEventListener('click', ()=>openImage(img.src));
+  });
+
+  D.mediaMeta.textContent = metaLine(a);
+
+  // descriere + tags
+  D.kTitle.textContent = a.title || '—';
+  D.kCategory.textContent = a.category || '—';
+  D.kShort.textContent = a.short || '—';
+  D.kTags.innerHTML = renderChips(a.tags);
+
+  // apk fields
+  D.kPkg.textContent = a.apk?.packageId || a.packageId || '—';
+  D.kVname.textContent = a.apk?.versionName || a.version || '—';
+  D.kVcode.textContent = (a.apk?.versionCode!=null ? a.apk.versionCode : a.versionCode) ?? '—';
+  D.kApkSize.textContent = bytes(a.apk?.sizeBytes);
+  D.kSha.textContent = a.apk?.sha256 || '—';
+
+  // demo pack
+  const d = a.demo || {};
+  setList(D.kQS, d.quickStart || []);
+  setPerms(D.kPerms, d.permissions || []);
+  setList(D.kFeatures, d.features || []);
+  setList(D.kLimits, d.limitations || []);
+  D.kLocales.textContent = (d.locales && d.locales.length) ? d.locales.join(', ') : '—';
+
+  // business
+  const b = a.business || {};
+  D.kPrice.textContent = (b.pricingFromEur!=null ? b.pricingFromEur : b.pricingFrom) ?? '—';
+  D.kSla.textContent = b.slaHours ?? '—';
+  D.kCust.textContent = (b.customization && b.customization.length) ? b.customization.join(', ') : '—';
+
+  // actiuni
+// reset & hook Needs-fix UI
+hideNeedsBox();
+
+// 1) Deschide textarea din drawer
+D.btnNeedsFix.onclick = () => {
+  showNeedsBox();
+};
+
+// 2) Anulează trimiterea
+D.nfCancel.onclick = () => {
+  hideNeedsBox();
+};
+
+// 3) Trimite Needs-fix + email
+D.nfSend.onclick = async () => {
+  const r = (D.nfReason.value || '').trim();
+  if (!r) return alert('Scrie motivul pentru Needs-fix.');
+  try {
+    await callStatus(id, 'needs-fix', r);
+    alert('Feedback trimis (NEEDS-FIX). Autorul va primi email.');
+    closeDrawer();
+    await loadApps(currentStatus);
+  } catch (e) {
+    console.error(e);
+    alert('Eroare la trimitere Needs-fix: ' + (e?.message || e));
+  }
+};
+
+// 4) Ctrl/Cmd + Enter = Trimite
+D.nfReason.onkeydown = (ev) => {
+  if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') {
+    D.nfSend.click();
+  }
+};
+
+  D.btnReject.onclick = async ()=>{
+    const r = prompt('Motivul respingerii (obligatoriu):')||''; if(!r.trim()) return;
+    await callStatus(id,'rejected', r.trim()); alert('Respins.'); closeDrawer(); await loadApps(currentStatus);
+  };
+  D.btnMovePending.onclick = async ()=>{ await callStatus(id,'pending',''); alert('Mutat in pending.'); closeDrawer(); await loadApps(currentStatus); };
+
+  // descarcare APK (link semnat prin CF)
+// descarcare APK (preview pentru admin, inainte de aprobare)
+D.btnPreviewApk.onclick = async ()=>{
+  try{
+    const url = await issueApkUrlPreview(id);   // vezi pasul 2 de mai jos (nou endpoint)
+    window.open(url, '_blank','noopener');
+  }catch(e){
+    console.error(e);
+    alert('Nu am putut genera linkul de descarcare (preview). ' + (e?.message || e));
+  }
+};
+
+  openDrawer();
+}
+
+/* ===================== Cards list ===================== */
+async function loadApps(status){
+  list.innerHTML = `<div class="empty">Se incarca…</div>`;
+
+  let docsArr = [];
+  try {
+    const qRef = query(collection(db,"apps"), where("status","==",status), orderBy("createdAt","desc"));
+    const snap = await getDocs(qRef);
+    docsArr = snap.docs;
+  } catch (e) {
+    if (String(e?.code||'') === 'failed-precondition') {
+      const qRef2 = query(collection(db,"apps"), where("status","==",status));
+      const s2 = await getDocs(qRef2);
+      docsArr = s2.docs.sort((a,b)=> (b.data().createdAt?.toMillis?.()||0) - (a.data().createdAt?.toMillis?.()||0));
+      console.warn('Index lipsa pentru (status + createdAt). Am folosit fallback temporar.');
+    } else {
+      console.error(e);
+      info.textContent = "Eroare la incarcare.";
+      list.innerHTML = `<div class="empty">Eroare la incarcare.</div>`;
+      return;
+    }
+  }
+
+  if (!docsArr.length){
+    list.innerHTML = `<div class="empty">Nu exista aplicatii cu status <strong>${esc(status)}</strong>.</div>`;
+    info.textContent = `0 rezultate (${status}).`;
+    return;
+  }
+
+  list.innerHTML = "";
+  docsArr.forEach(d=>{
+    const a = d.data();
+    const id = a.id || d.id;
+    const created = a.createdAt?.toDate ? a.createdAt.toDate() : null;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${esc(a.title || 'Aplicatie Android')}
+        <span class="muted">v${esc((a.apk?.versionName) || a.version || '1.0')}</span>
+      </h3>
+      <div class="meta">Autor: ${esc(a.author || 'Anonim')}${a.authorEmail ? ' • ' + esc(a.authorEmail) : ''} ${created ? `• ${created.toLocaleString()}` : ''}</div>
+      <p>${esc(a.short || '')}</p>
+      <div class="muted" style="margin:8px 0">${esc(metaLine(a))}</div>
+      <div>${(a.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn primary" data-act="open" data-id="${id}">Vezi detalii</button>
+        <button class="btn" data-act="approve" data-id="${id}">Aproba</button>
+        <button class="btn" data-act="needsfix" data-id="${id}">Needs-fix</button>
+        <button class="btn warn" data-act="rejected" data-id="${id}">Respinge</button>
+        ${a.status!=='pending' ? `<button class="btn" data-act="pending" data-id="${id}">Pending</button>` : ''}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  info.textContent = `${docsArr.length} rezultate (${status}).`;
+}
+
+// delegate actions
+list.addEventListener('click', async (e) => {
+  const b = e.target.closest('button[data-act]'); if (!b) return;
+  const id = b.getAttribute('data-id');
+  const act = b.getAttribute('data-act');
+
+  try {
+    if (act === 'open') {
+      // load single doc fresh
+      const s = await getDoc(doc(db, 'apps', id));
+      if(!s.exists()){ alert('Document inexistent.'); return; }
+      fillDrawer(id, s.data());
+      return;
+    }
+    if (act === 'needsfix') {
+      const s = await getDoc(doc(db,'apps',id)); if(!s.exists()) return;
+      fillDrawer(id, s.data());     // deschide drawer
+      showNeedsBox();               // afișează textarea + focus + scroll
+      return;
+    }
+
+    if (act === 'approve') {
+      await callStatus(id, 'approved', '');
+      alert('Aprobat.');
+      await loadApps(currentStatus);
+      return;
+    }
+    if (act === 'rejected') {
+      const r = (prompt('Motivul respingerii (obligatoriu):') || '').trim();
+      if (!r) return;
+      await callStatus(id, 'rejected', r);
+      alert('Respins.');
+      await loadApps(currentStatus);
+      return;
+    }
+    if (act === 'pending') {
+      await callStatus(id, 'pending', '');
+      alert('Mutat in pending.');
+      await loadApps(currentStatus);
+      return;
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Eroare: ' + (err?.message || err));
+  }
+});
+
+async function previewDownloadApk(appId) {
+  if (!auth.currentUser) {
+    await signInWithPopup(auth, new GoogleAuthProvider());
+  }
+  const token = await auth.currentUser.getIdToken();
+  const u = new URL("https://us-central1-mtechdigital-2449f.cloudfunctions.net/issueApkUrl");
+  u.searchParams.set("id", appId);
+
+  const r = await fetch(u, {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
+  if (!r.ok) throw new Error(`issueApkUrl ${r.status}: ${await r.text()}`);
+
+  const { url } = await r.json();
+  const w = window.open(url, "_blank", "noopener");
+  if (!w) alert("Permite pop-ups pentru a descarca APK.");
+}
+
+
+
+// escape for images click (global handler already set via addEventListener)
+window.openImage = (url)=>window.open(url,'_blank','noopener');
+
+
+</script>
+</body>
+</html>

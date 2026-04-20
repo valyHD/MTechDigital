@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <title>Profilul meu • MTECH DIGITAL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0e1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #0f1624; --deep2: #0a0e1a;
+      --neon: #00e5ff; --neon2: #b85cff;
+      --text: #e5f6ff; --muted: #8b9cb8;
+      --card: rgba(15, 22, 36, .6); --ring: rgba(0, 229, 255, .35);
+      --break: 900px;
+    }
+
+    *{ box-sizing: border-box }
+
+    /* ---------- FUNDAL + STRATURI ---------- */
+    body{
+      margin:0; color:var(--text); font-family: Inter, system-ui;
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(0,229,255,.12), transparent 60%),
+        radial-gradient(900px 600px at 80% -20%, rgba(184,92,255,.12), transparent 65%),
+        radial-gradient(ellipse at top, #0f1624 0%, #0a0e1a 100%) !important;
+    }
+    body.fx::before, body.fx::after{
+      content:""; position:fixed; inset:-20% -10% auto -10%; height:70vh; pointer-events:none;
+      z-index:0; filter:blur(60px); opacity:.45; transform:translate3d(0,0,0);
+    }
+    body.fx::before{ background: radial-gradient(closest-side, rgba(0,229,255,.30), transparent 70%); animation:floatA 22s ease-in-out infinite; }
+    body.fx::after{  background: radial-gradient(closest-side, rgba(184,92,255,.28), transparent 70%); animation:floatB 28s ease-in-out infinite; }
+    @keyframes floatA{ 0%{transform:translate3d(-6%,0,0)} 50%{transform:translate3d(6%,4%,0)} 100%{transform:translate3d(-6%,0,0)} }
+    @keyframes floatB{ 0%{transform:translate3d(6%,2%,0)} 50%{transform:translate3d(-4%,-2%,0)} 100%{transform:translate3d(6%,2%,0)} }
+
+    #bgParticles{ position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
+    .neon-grid{
+      position:fixed; inset:0; z-index:1; pointer-events:none;
+      background:
+        repeating-linear-gradient(0deg, rgba(163,206,241,.05) 0px, rgba(163,206,241,.05) 1px, transparent 1px, transparent 28px),
+        repeating-linear-gradient(90deg, rgba(163,206,241,.05) 0px, rgba(163,206,241,.05) 1px, transparent 1px, transparent 28px);
+    }
+
+    /* ---------- LAYOUT ---------- */
+    .wrap{ max-width:1100px; margin:0 auto; padding:24px; position:relative; z-index:2; }
+    .grid{ display:grid; grid-template-columns:320px 1fr; gap:20px; margin-top:20px }
+
+    /* ---------- HEADER + MENIU ---------- */
+    header.wrap{ display:flex; align-items:center; justify-content:space-between; padding:16px 0;
+      border-bottom:1px solid rgba(0,229,255,.20); background:rgba(10,14,26,.55);
+      backdrop-filter: blur(10px) saturate(140%);
+    }
+    .brand{ display:flex; align-items:center; gap:12px; font-family:Orbitron, sans-serif; font-weight:900 }
+    .logo{ width:40px; height:40px; border-radius:10px; display:grid; place-items:center; color:#0a0e1a;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+    }
+
+    nav.desktop{ display:flex; gap:20px }
+    nav.desktop a, .drawer a{
+      color:var(--text); text-decoration:none; opacity:.9;
+    }
+    nav.desktop a:hover, .drawer a:hover{ color:var(--neon) }
+
+    /* Burger */
+    .burger{ display:none; width:40px; height:40px; border-radius:10px; border:1px solid rgba(0,229,255,.25);
+      background: rgba(0,229,255,.06); color:var(--text); align-items:center; justify-content:center; cursor:pointer;
+    }
+    .burger svg{ width:22px; height:22px }
+
+    /* Drawer mobil */
+    .drawer{
+      position:fixed; inset:0 0 0 auto; width:min(86vw, 360px); height:100dvh; z-index:99;
+      transform: translateX(100%); transition:transform .28s ease;
+      background:rgba(9,14,24,.78); backdrop-filter: blur(12px) saturate(140%);
+      border-left:1px solid rgba(0,229,255,.25); padding:20px;
+      display:flex; flex-direction:column; gap:16px;
+    }
+    .drawer.open{ transform:translateX(0) }
+    .drawer .close{ align-self:flex-end; background:transparent; border:none; color:var(--text); font-size:28px; line-height:1; cursor:pointer }
+    .drawer .links{ display:flex; flex-direction:column; gap:14px; margin-top:8px }
+    .drawer .links a{ padding:10px 12px; border:1px solid rgba(0,229,255,.18); border-radius:12px; background:rgba(0,229,255,.05) }
+
+    /* ---------- CARDS ---------- */
+    .card{
+      border-radius:16px; padding:16px; border:1px solid rgba(0,229,255,.22);
+      background: rgba(10, 16, 28, .35); /* default: semi-transparent */
+      backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: 0 6px 24px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03);
+      opacity: .78;
+    }
+    .card:hover{ border-color:rgba(0,229,255,.34); box-shadow:0 10px 34px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04) }
+
+    /* Carduri special transparente: IDENTITATE + FORM FIELDS + COMPANIE */
+    .card--glass{ background: rgba(10,16,28,.22); backdrop-filter: blur(10px) saturate(140%); }
+    .card--glass:hover{ background: rgba(10,16,28,.26); }
+
+    .card h2{ font-family: Orbitron, sans-serif; font-size:20px; margin:0 0 12px; color:#cfeaff }
+    .card h2::after{
+      content:""; display:block; height:2px; width:64px; margin-top:8px;
+      background: linear-gradient(90deg, var(--neon), var(--neon2)); border-radius:999px; opacity:.95;
+    }
+
+    /* ---------- FORM ---------- */
+    label{ font-size:13px; color:var(--muted); font-weight:600 }
+    .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+    input, textarea{
+      width:100%; padding:12px; border-radius:10px; margin-top:6px;
+      color:var(--text); background:#0e1526; /* opac pentru lizibilitate */
+      border:1px solid #184a56; box-shadow:none;
+    }
+    input:hover, textarea:hover{ border-color:#1e6a7a }
+    input:focus, textarea:focus{ border-color:var(--neon); box-shadow:0 0 0 2px rgba(0,229,255,.18); outline:0 }
+    input::placeholder, textarea::placeholder{ color:#87a0b8 }
+
+    .avatar{
+      width:120px; height:120px; border-radius:16px; object-fit:cover; background:#06101a;
+      border:1px solid rgba(0,229,255,.3);
+      box-shadow: inset 0 0 0 1px rgba(0,229,255,.18), 0 0 18px rgba(0,0,0,.25);
+    }
+
+    /* ---------- BUTOANE ---------- */
+    .btn{
+      display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border-radius:12px;
+      border:1px solid rgba(0,229,255,.26); background:rgba(0,229,255,.10); color:#bfefff; cursor:pointer;
+    }
+    .btn:hover{ border-color:rgba(0,229,255,.34); background:rgba(0,229,255,.14) }
+
+    .btn-primary{
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      border:none;
+      color:#ffffff;                 /* ← text ALB, nu negru */
+      text-shadow: 0 1px 0 rgba(0,0,0,.25);
+    }
+    .btn-primary:hover{ filter: brightness(1.05) }
+
+    #cvLink.btn, #publicLink.btn{
+      color: var(--neon); background: rgba(0,229,255,.08); border:1px solid rgba(0,229,255,.22);
+    }
+
+    .muted{ color:var(--muted) }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1120px){ .wrap{ padding:18px } }
+    @media (max-width: 1000px){ .grid{ gap:16px } }
+
+    @media (max-width: 900px){
+      /* layout */
+      .grid{ grid-template-columns:1fr }
+      header.wrap{ padding:12px 0 }
+      /* meniu mobil */
+      nav.desktop{ display:none }
+      .burger{ display:inline-flex }
+      .wrap{ padding: 18px 16px }
+      /* spacing */
+      .card{ border-radius:14px; padding:14px }
+      .row{ grid-template-columns:1fr; gap:14px }
+      h1{ font-size:26px }
+    }
+.custom-cursor { display: none !important; }
+body { cursor: auto !important; }
+  </style>
+</head>
+
+<body class="fx">
+  <!-- strat particule + grid -->
+  <canvas id="bgParticles"></canvas>
+  <div class="neon-grid"></div>
+
+  <header class="wrap">
+    <div class="brand">
+      <div class="logo">M</div>
+      <div>MTECH DIGITAL</div>
+    </div>
+
+    <nav class="desktop">
+      <a href="index.html">Acasă</a>
+      <a href="dezvoltatori.html">Dezvoltatori</a>
+      <a href="companii.html">Companii</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Deschide meniul">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-width="2" d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Drawer mobil -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <button class="close" id="drawerClose" aria-label="Închide">×</button>
+    <div style="font-family:Orbitron; font-weight:900; font-size:18px; margin-top:-8px;">MTECH DIGITAL</div>
+    <div class="links">
+      <a href="index.html">Acasă</a>
+      <a href="dezvoltatori.html">Dezvoltatori</a>
+      <a href="companii.html">Companii</a>
+    </div>
+  </aside>
+
+  <main class="wrap">
+    <h1 style="font-family:Orbitron;margin:16px 0 8px">Profilul meu</h1>
+    <p class="muted">Completează profilul public de dezvoltator: avatar, headline, skill-uri, linkuri, experiență, CV.</p>
+
+    <div id="needLogin" class="card" style="display:none">
+      <p>Trebuie să te conectezi.</p>
+      <button id="btnLogin" class="btn">Conectează-te cu Google</button>
+    </div>
+
+    <div id="profileUI" style="display:none" class="grid">
+      <!-- Col stânga: IDENTITATE (transparent) -->
+      <section class="card card--glass">
+        <h2>Identitate</h2>
+        <img id="avatar" class="avatar" alt="avatar">
+        <div style="margin-top:10px">
+          <input type="file" id="avatarFile" accept="image/*" />
+          <button id="btnUploadAvatar" class="btn" style="margin-top:8px">Încarcă avatar</button>
+          <div id="avatarState" class="muted" style="margin-top:6px"></div>
+        </div>
+        <div style="margin-top:12px">
+          <label>Nume afișat</label>
+          <input id="displayName" placeholder="Nume Prenume" />
+        </div>
+        <div style="margin-top:12px">
+          <label>Headline (max 80c)</label>
+          <input id="headline" maxlength="80" placeholder="Android/Kotlin • Firebase • OCR • ERP" />
+        </div>
+        <div style="margin-top:12px">
+          <label>Bio</label>
+          <textarea id="bio" rows="5" placeholder="Ce faci, ce te pasionează, ce tipuri de proiecte cauți."></textarea>
+        </div>
+      </section>
+
+      <!-- Col dreapta: FORM FIELDS (transparent) -->
+      <section class="card card--glass">
+        <h2>Skill-uri & Linkuri</h2>
+        <div class="row">
+          <div>
+            <label>Skill-uri (virgulă)</label>
+            <input id="skills" placeholder="kotlin, compose, firebase, ocr, threejs" />
+          </div>
+          <div>
+            <label>Industrie/Focus (virgulă)</label>
+            <input id="industries" placeholder="retail, teren, erp, crm" />
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>GitHub</label>
+            <input id="github" placeholder="https://github.com/user" />
+          </div>
+          <div>
+            <label>Portofoliu</label>
+            <input id="portfolio" placeholder="https://portfolio.me" />
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>Website</label>
+            <input id="website" placeholder="https://exemplu.ro" />
+          </div>
+          <div>
+            <label>LinkedIn</label>
+            <input id="linkedin" placeholder="https://linkedin.com/in/..." />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>CV (PDF)</label>
+            <input type="file" id="cvFile" accept="application/pdf" />
+          </div>
+          <div style="display:flex;align-items:end">
+            <button id="btnUploadCV" class="btn">Încarcă CV</button>
+            <a id="cvLink" class="btn" style="margin-left:8px;display:none" target="_blank">Vezi CV</a>
+          </div>
+        </div>
+
+        <h2 style="margin-top:20px">Experiență</h2>
+        <div id="expList" class="exp"></div>
+        <button id="btnAddExp" class="btn" style="margin-top:6px">+ Adaugă experiență</button>
+
+        <!-- COMPANIE (transparent) -->
+        <section class="card card--glass" id="companyCard" style="margin-top:20px">
+          <h2>Pentru Companie</h2>
+          <p class="muted" style="margin:0 0 10px">Completează doar dacă profilul este creat de o companie.</p>
+          <div class="row">
+            <div>
+              <label>Denumire companie</label>
+              <input id="companyName" placeholder="MTECH Digital SRL" />
+            </div>
+            <div>
+              <label>Headline companie (max 80c)</label>
+              <input id="companyHeadline" maxlength="80" placeholder="Soluții Android & web pentru IMM-uri" />
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <label>Descriere companie</label>
+            <textarea id="companyAbout" rows="5" placeholder="Cine sunteți, ce oferiți, în ce vă specializați."></textarea>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label>Website</label>
+              <input id="companyWebsite" placeholder="https://exemplu.ro" />
+            </div>
+            <div>
+              <label>LinkedIn</label>
+              <input id="companyLinkedin" placeholder="https://linkedin.com/company/..." />
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label>Industrie (virgulă)</label>
+              <input id="companyIndustries" placeholder="retail, teren, logistică" />
+            </div>
+            <div>
+              <label>Servicii (virgulă)</label>
+              <input id="companyServices" placeholder="android apps, integrare ERP, OCR" />
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label>Email contact</label>
+              <input id="companyEmail" placeholder="contact@firma.ro" />
+            </div>
+            <div>
+              <label>Telefon</label>
+              <input id="companyPhone" placeholder="+40 7xx xxx xxx" />
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label>Oraș</label>
+              <input id="companyCity" placeholder="București" />
+            </div>
+            <div>
+              <label>Țară</label>
+              <input id="companyCountry" placeholder="România" />
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label>CIF/CUI</label>
+              <input id="companyCif" placeholder="RO12345678" />
+            </div>
+            <div>
+              <label>An înființare</label>
+              <input id="companyYear" type="number" placeholder="2019" />
+            </div>
+          </div>
+        </section>
+
+        <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="btnSave" class="btn btn-primary">Salvează profil</button>
+          <a id="publicLink" class="btn" target="_blank">Vezi profil public</a>
+          <span id="saveState" class="muted"></span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Firebase + App logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyDg_P0xmt22HyVNQbFQqH9ASP68sJ0b2j8",
+      authDomain: "mtechdigital-2449f.firebaseapp.com",
+      projectId: "mtechdigital-2449f",
+      storageBucket: "mtechdigital-2449f.firebasestorage.app"
+    });
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    window.auth = auth;
+
+    const needLogin = document.getElementById('needLogin');
+    const profileUI = document.getElementById('profileUI');
+    const el = (id) => document.getElementById(id);
+    let unsubProfile = null;
+
+    let formDirty = false;
+    [
+      'displayName','headline','bio','skills','industries','github','portfolio','website','linkedin',
+      'companyName','companyHeadline','companyAbout','companyWebsite','companyLinkedin',
+      'companyIndustries','companyServices','companyEmail','companyPhone','companyCity','companyCountry','companyCif','companyYear'
+    ].forEach(id => { const x = el(id); if(x){ x.addEventListener('input', () => { formDirty = true; }); }});
+
+    function setProfileUI(p){
+      if (formDirty) return;
+      el('avatar').src = p.photoURL || 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><rect width=%22120%22 height=%22120%22 rx=%2216%22 fill=%22%2306111a%22/></svg>';
+      el('displayName').value = p.displayName || '';
+      el('headline').value = p.headline || '';
+      el('bio').value = p.bio || '';
+      el('skills').value = (p.skills || []).join(', ');
+      el('industries').value = (p.industries || []).join(', ');
+      el('github').value = p.github || '';
+      el('portfolio').value = p.portfolio || '';
+      el('website').value = p.website || '';
+      el('linkedin').value = p.linkedin || '';
+
+      const c = p.company || {};
+      el('companyName').value = c.name || '';
+      el('companyHeadline').value = c.headline || '';
+      el('companyAbout').value = c.about || '';
+      el('companyWebsite').value = c.website || '';
+      el('companyLinkedin').value = c.linkedin || '';
+      el('companyIndustries').value = (c.industries || []).join(', ');
+      el('companyServices').value = (c.services || []).join(', ');
+      el('companyEmail').value = c.email || '';
+      el('companyPhone').value = c.phone || '';
+      el('companyCity').value = c.city || '';
+      el('companyCountry').value = c.country || '';
+      el('companyCif').value = c.cif || '';
+      el('companyYear').value = c.yearFounded || '';
+
+      const a = el('cvLink');
+      if (p.cvUrl) { a.href = p.cvUrl; a.style.display = 'inline-flex'; } else { a.style.display = 'none'; }
+
+      const host = el('expList'); host.innerHTML = '';
+      (p.experience || []).forEach(addExpRow);
+    }
+
+    el('btnSave').addEventListener('click', async () => { formDirty = false; });
+
+    function readProfileFromUI(){
+      const toArr = s => s.split(',').map(x => x.trim()).filter(Boolean);
+      const exps = Array.from(document.querySelectorAll('.exp-item')).map(node => ({
+        role: node.querySelector('[data-role]').value.trim(),
+        company: node.querySelector('[data-company]').value.trim(),
+        period: node.querySelector('[data-period]').value.trim(),
+        desc: node.querySelector('[data-desc]').value.trim()
+      })).filter(x => x.role || x.company || x.desc);
+
+      const data = {
+        displayName: el('displayName').value.trim(),
+        headline: el('headline').value.trim(),
+        bio: el('bio').value.trim(),
+        skills: toArr(el('skills').value),
+        industries: toArr(el('industries').value),
+        github: el('github').value.trim(),
+        portfolio: el('portfolio').value.trim(),
+        website: el('website').value.trim(),
+        linkedin: el('linkedin').value.trim(),
+        experience: exps
+      };
+
+      const company = {
+        name: el('companyName').value.trim(),
+        headline: el('companyHeadline').value.trim(),
+        about: el('companyAbout').value.trim(),
+        website: el('companyWebsite').value.trim(),
+        linkedin: el('companyLinkedin').value.trim(),
+        industries: toArr(el('companyIndustries').value),
+        services: toArr(el('companyServices').value),
+        email: el('companyEmail').value.trim(),
+        phone: el('companyPhone').value.trim(),
+        city: el('companyCity').value.trim(),
+        country: el('companyCountry').value.trim(),
+        cif: el('companyCif').value.trim(),
+        yearFounded: Number(el('companyYear').value || '') || null
+      };
+      Object.keys(company).forEach(k => {
+        if ((typeof company[k] === 'string' && company[k] === '') || (Array.isArray(company[k]) && company[k].length === 0) || company[k] === null) {
+          delete company[k];
+        }
+      });
+      if (Object.keys(company).length){ data.company = company; }
+
+      Object.keys(data).forEach(k => { if (typeof data[k] === 'string' && data[k] === '') delete data[k]; });
+
+      return data;
+    }
+
+    el('btnSave').addEventListener('click', async () => {
+      const u = auth.currentUser; if (!u) return;
+      const payload = readProfileFromUI();
+      el('saveState').textContent = 'Se salvează...';
+      try{
+        await setDoc(doc(db, 'users', u.uid), { ...payload, updatedAt: serverTimestamp() }, { merge: true });
+        if (payload.displayName) { await updateProfile(u, { displayName: payload.displayName }).catch(console.warn); }
+        const snap = await getDoc(doc(db, 'users', u.uid));
+        if (snap.exists()) setProfileUI(snap.data());
+        formDirty = false;
+        el('saveState').textContent = '✅ Salvat.';
+      }catch(e){
+        console.error(e);
+        el('saveState').textContent = 'Eroare la salvare.';
+      }
+    });
+
+    function addExpRow(exp){
+      const host = el('expList');
+      const wrap = document.createElement('div');
+      wrap.className = 'exp-item';
+      wrap.innerHTML = `
+        <div class="row">
+          <div>
+            <label>Rol</label>
+            <input data-role placeholder="Android Developer" />
+          </div>
+          <div>
+            <label>Companie / Client</label>
+            <input data-company placeholder="ACME / Freelance" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Perioadă</label>
+            <input data-period placeholder="2022–2024" />
+          </div>
+          <div>
+            <label>Descriere</label>
+            <input data-desc placeholder="OCR bonuri, PDF export, Firebase" />
+          </div>
+        </div>`;
+      host.appendChild(wrap);
+      if(exp){
+        wrap.querySelector('[data-role]').value = exp.role || '';
+        wrap.querySelector('[data-company]').value = exp.company || '';
+        wrap.querySelector('[data-period]').value = exp.period || '';
+        wrap.querySelector('[data-desc]').value = exp.desc || '';
+      }
+    }
+    el('btnAddExp').addEventListener('click', () => addExpRow());
+
+    el('btnUploadAvatar').addEventListener('click', async () => {
+      const f = el('avatarFile').files?.[0];
+      if (!f) { el('avatarState').textContent = 'Alege o imagine.'; return; }
+      const u = auth.currentUser; if (!u) { el('avatarState').textContent = 'Conectează-te.'; return; }
+      el('avatarState').textContent = 'Se încarcă...';
+      try{
+        const path = `profilePhotos/${u.uid}/avatar_${Date.now()}.jpg`;
+        const r = ref(storage, path);
+        await uploadBytes(r, f, { contentType: f.type || 'image/jpeg' });
+        const url = await getDownloadURL(r);
+        el('avatar').src = url;
+        await setDoc(doc(db, 'users', u.uid), { photoURL: url, photoUpdatedAt: serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
+        await updateProfile(u, { photoURL: url }).catch(console.warn);
+        el('avatarState').textContent = '✅ Avatar actualizat.';
+      }catch(e){
+        console.error(e); el('avatarState').textContent = 'Eroare upload';
+      }
+    });
+
+    el('btnUploadCV').addEventListener('click', async () => {
+      const f = el('cvFile').files?.[0];
+      const u = auth.currentUser; if (!u || !f) return;
+      el('saveState').textContent = 'Încarc CV...';
+      try{
+        const r = ref(storage, `cv/${u.uid}/cv_${Date.now()}.pdf`);
+        await uploadBytes(r, f);
+        const url = await getDownloadURL(r);
+        await setDoc(doc(db, 'users', u.uid), { cvUrl: url, updatedAt: serverTimestamp() }, { merge: true });
+        const a = el('cvLink'); a.href = url; a.style.display = 'inline-flex';
+        el('saveState').textContent = '✅ CV încărcat.';
+      }catch(e){
+        console.error(e); el('saveState').textContent = 'Eroare CV';
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        needLogin.style.display = 'block';
+        profileUI.style.display = 'none';
+        document.getElementById('btnLogin').onclick = () => signInWithPopup(auth, new GoogleAuthProvider());
+        if (typeof unsubProfile === 'function') { unsubProfile(); unsubProfile = null; }
+        return;
+      }
+      needLogin.style.display = 'none';
+      profileUI.style.display = 'grid';
+
+      const link = `${location.origin}${location.pathname.replace(/[^\/]+$/, '')}dev.html?uid=${user.uid}`;
+      const a = document.getElementById('publicLink'); a.href = link;
+
+      if (typeof unsubProfile === 'function') { unsubProfile(); unsubProfile = null; }
+      const userRef = doc(db, 'users', user.uid);
+      unsubProfile = onSnapshot(userRef, (snap) => {
+        const p = snap.exists() ? snap.data() : {};
+        if (!p.displayName && user.displayName) p.displayName = user.displayName;
+        if (!p.photoURL && user.photoURL) p.photoURL = user.photoURL;
+        setProfileUI(p);
+      }, (err) => { console.error('onSnapshot users/{uid} error:', err); });
+    });
+
+    /* Meniu mobil */
+    const burger = document.getElementById('burger');
+    const drawer = document.getElementById('drawer');
+    const drawerClose = document.getElementById('drawerClose');
+    burger?.addEventListener('click', () => { drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); });
+    drawerClose?.addEventListener('click', () => { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); });
+    drawer?.addEventListener('click', (e) => { if(e.target === drawer){ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }});
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }});
+  </script>
+
+  <!-- Particule canvas -->
+  <script>
+    (() => {
+      const canvas = document.getElementById('bgParticles'); if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const css = getComputedStyle(document.documentElement);
+      const COLOR_A = css.getPropertyValue('--neon').trim() || '#00e5ff';
+      const COLOR_B = css.getPropertyValue('--neon2').trim() || '#b85cff';
+
+      let w=0,h=0,dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
+      const resize = () => {
+        w = canvas.clientWidth = window.innerWidth;
+        h = canvas.clientHeight = window.innerHeight;
+        canvas.width  = Math.floor(w*dpr);
+        canvas.height = Math.floor(h*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      };
+      resize(); window.addEventListener('resize', resize, {passive:true});
+
+      const mouse = { x:w/2, y:h/2 };
+      window.addEventListener('mousemove', e => { mouse.x=e.clientX; mouse.y=e.clientY; }, {passive:true});
+
+      const AREA_DENS = 0.08;
+      const targetCount = Math.round((w*h)/10000 * AREA_DENS);
+      const N = Math.max(60, Math.min(220, targetCount));
+      const rand=(a,b)=>a+Math.random()*(b-a);
+
+      const parts = Array.from({length:N}).map(spawn);
+      function spawn(){
+        const size = rand(0.6,1.8), speed = rand(18,45), x = Math.random()*w, y = h + rand(0, h*0.4);
+        const color = Math.random()<.5 ? COLOR_A : COLOR_B, alpha = rand(.25,.55), drift=rand(-12,12);
+        return {x,y,size,speed,drift,color,alpha};
+      }
+
+      let last = performance.now();
+      function tick(now){
+        const dt = Math.min(.05,(now-last)/1000); last=now;
+        ctx.clearRect(0,0,w,h);
+        const mx = (mouse.x / w - .5)*10;
+
+        for (let p of parts){
+          p.x += (p.drift + mx)*dt;
+          p.y -= p.speed*dt;
+
+          if (p.y < -10 || p.x < -20 || p.x > w+20){ Object.assign(p, spawn(), { y:h+10 }); }
+
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill();
+
+          ctx.globalAlpha = p.alpha*.15;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.size*4,0,Math.PI*2); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+</html>

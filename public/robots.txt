@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# ascunde pagini interne
+Disallow: /admin.html
+Disallow: /profil.html
+Disallow: /dev.html
+
+Sitemap: https://mtechdigital.ro/sitemap.xml

@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Adaugă aplicație • Mtech Digital</title>
+  <style>
+    /* ================== THEME & LAYOUT ================== */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@300;400;600;700;800;900&display=swap');
+
+    :root {
+      --neon-blue: #00e5ff;
+      --neon-purple: #b85cff;
+      --neon-pink: #ff0080;
+      --deep-1: #0a0e1a;
+      --deep-2: #0f1624;
+      --text: #e5f6ff;
+      --muted: #8b9cb8;
+      --ring: rgba(0, 229, 255, .35);
+      --card: rgba(15, 22, 36, .68);
+      --max: 1100px;
+      --dot: rgba(160, 235, 255, .18);
+      --dot2: rgba(184, 92, 255, .16);
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+      background: radial-gradient(ellipse at 20% -10%, #13213a 0%, var(--deep-2) 40%, var(--deep-1) 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -10% -15% auto auto;
+      width: 780px;
+      height: 780px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: .28;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 30% 30%, var(--neon-purple), transparent 60%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto auto -15% -10%;
+      width: 680px;
+      height: 680px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: .22;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 70% 70%, var(--neon-blue), transparent 60%);
+    }
+
+    html::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(to bottom, rgba(255, 255, 255, .03) 0 1px, transparent 1px 3px),
+        linear-gradient(rgba(0, 229, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.12) 1px, transparent 1px),
+        radial-gradient(2px 2px at 10% 0%, var(--dot), transparent 60%),
+        radial-gradient(1.5px 1.5px at 80% 0%, var(--dot2), transparent 60%);
+      background-size: 100% 4px, 60px 60px, 60px 60px, 120px 240px, 160px 300px;
+      animation: gridPan 28s linear infinite, dotsRise1 24s linear infinite, dotsRise2 32s linear infinite;
+    }
+
+    @keyframes gridPan {
+      0% {
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0
+      }
+
+      100% {
+        background-position: 0 0, 0 60px, 60px 0, 0 -240px, 0 -300px
+      }
+    }
+
+    @keyframes dotsRise1 {
+      0% {
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0
+      }
+
+      100% {
+        background-position: 0 0, 0 60px, 60px 0, 0 -240px, 0 0
+      }
+    }
+
+    @keyframes dotsRise2 {
+      0% {
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0
+      }
+
+      100% {
+        background-position: 0 0, 0 60px, 60px 0, 0 0, 0 -300px
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html::before {
+        animation: none
+      }
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px;
+      position: relative;
+      z-index: 1
+    }
+
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(0, 229, 255, .22);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(255, 255, 255, .02);
+      transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+
+    .card:hover {
+      border-color: var(--neon-blue);
+      box-shadow: 0 24px 70px rgba(0, 229, 255, .18)
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: .4px
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-weight: 900;
+      font-size: clamp(28px, 3.6vw, 42px);
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 24px rgba(0, 229, 255, .25));
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-weight: 800;
+      color: #9fe8ff
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      color: var(--text)
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40vh;
+      text-align: center
+    }
+
+    .inline {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .hidden {
+      display: none
+    }
+
+    /* inputs */
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 700;
+      color: #cfeeff;
+      font-size: 14px
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 229, 255, .25);
+      background: rgba(0, 229, 255, .06);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s, transform .08s;
+    }
+
+    textarea {
+      resize: vertical
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, .15), 0 0 24px rgba(0, 229, 255, .12);
+      background: rgba(0, 229, 255, .09);
+      transform: scale(1.01);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #a6cbe6;
+      margin-top: 6px
+    }
+
+    .btn {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      background: rgba(0, 229, 255, .08);
+      transition: transform .2s, box-shadow .2s, color .2s, border-color .2s, background .2s;
+    }
+
+    .btn.primary {
+      border: none;
+      color: #0a0e1a;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      box-shadow: 0 0 40px rgba(0, 229, 255, .35), 0 10px 30px rgba(0, 229, 255, .25)
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 229, 255, .22)
+    }
+
+    .page-subnav {
+      position: sticky;
+      top: 8px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 8px 0 12px;
+      padding: 8px;
+      background: rgba(0, 229, 255, .06);
+      border: 1px solid rgba(0, 229, 255, .18);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .page-subnav a {
+      display: inline-block;
+      padding: 8px 12px;
+      font-weight: 800;
+      color: #9fe8ff;
+      text-decoration: none;
+      border-radius: 10px
+    }
+
+    /* file input zone */
+    .input-file {
+      display: block;
+      border: 1px dashed rgba(0, 229, 255, .35);
+      background: rgba(0, 229, 255, .06);
+      padding: 14px;
+      border-radius: 14px;
+      transition: .2s
+    }
+
+    .input-file:hover {
+      border-color: var(--neon-blue);
+      background: rgba(0, 229, 255, .09)
+    }
+
+    .progress {
+      --val: 0%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(0, 229, 255, .08);
+      border: 1px solid rgba(0, 229, 255, .18);
+      overflow: hidden;
+      position: relative;
+      margin-top: 10px
+    }
+
+    .progress::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--val);
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+      box-shadow: 0 0 24px rgba(0, 229, 255, .35)
+    }
+
+    /* ====== MY APPS LIST ====== */
+    #myAppsCard {
+      position: relative;
+      overflow: visible
+    }
+
+    #myApps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px
+    }
+
+    #myApps .card {
+      padding-top: 42px;
+      position: relative
+    }
+
+    #myApps .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(0, 229, 255, .6), rgba(184, 92, 255, .6));
+      opacity: .9
+    }
+
+    #myApps .status-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 229, 255, .22);
+      background: rgba(0, 229, 255, .08);
+      color: #9fe8ff;
+    }
+
+    .app-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: -6px 0 8px
+    }
+
+    .app-meta {
+      font-size: 12px;
+      color: #a6cbe6
+    }
+
+    .app-actions {
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(-2px);
+      transition: .2s;
+      pointer-events: none
+    }
+
+    #myApps .card:hover .app-actions {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0)
+    }
+
+    .app-actions .btn-mini {
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 12px;
+      border: 1px solid rgba(0, 229, 255, .22);
+      color: #9fe8ff;
+      background: rgba(0, 229, 255, .06)
+    }
+
+    .app-actions .btn-mini:hover {
+      background: var(--neon-blue);
+      color: #0a0e1a;
+      border-color: var(--neon-blue)
+    }
+
+    /* status colors */
+    #myApps .card.status-approved {
+      border-color: rgba(0, 255, 136, .5)
+    }
+
+    #myApps .card.status-approved::before {
+      background: linear-gradient(180deg, #00ff88, #00e5bb)
+    }
+
+    #myApps .card.status-approved .status-badge {
+      background: #00ff88;
+      border-color: #00ff88;
+      color: #0a0e1a
+    }
+
+    #myApps .card.status-pending {
+      border-color: rgba(255, 184, 0, .45)
+    }
+
+    #myApps .card.status-pending::before {
+      background: linear-gradient(180deg, #ffb800, #ffd27a)
+    }
+
+    #myApps .card.status-pending .status-badge {
+      background: #ffb800;
+      border-color: #ffb800;
+      color: #0a0e1a
+    }
+
+    #myApps .card.status-rejected {
+      border-color: rgba(255, 0, 128, .45)
+    }
+
+    #myApps .card.status-rejected::before {
+      background: linear-gradient(180deg, #ff0080, #ff5aa8)
+    }
+
+    #myApps .card.status-rejected .status-badge {
+      background: #ff0080;
+      border-color: #ff0080;
+      color: #0a0e1a
+    }
+
+    #myApps .card.status-needs-fix {
+      border-color: rgba(184, 92, 255, .5)
+    }
+
+    #myApps .card.status-needs-fix::before {
+      background: linear-gradient(180deg, #b85cff, #7a3cff)
+    }
+
+    #myApps .card.status-needs-fix .status-badge {
+      background: #b85cff;
+      border-color: #b85cff;
+      color: #0a0e1a
+    }
+
+    /* ====== DRAWER (detalii) ====== */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      backdrop-filter: blur(4px);
+      display: none;
+      z-index: 1000
+    }
+
+    .drawer-backdrop.show {
+      display: block
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(760px, 100%);
+      height: 100%;
+      background: rgba(15, 22, 36, .96);
+      border-left: 1px solid rgba(0, 229, 255, .2);
+      box-shadow: -20px 0 60px rgba(0, 0, 0, .5);
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      z-index: 1001;
+      overflow: auto
+    }
+
+    .drawer.open {
+      transform: translateX(0)
+    }
+
+    .drawer .head {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 14, 26, .9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 229, 255, .18);
+      padding: 14px 18px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .drawer .body {
+      padding: 16px 18px 28px
+    }
+
+    .sec {
+      margin-bottom: 18px
+    }
+
+    .sec h4 {
+      margin: 0 0 10px;
+      color: #9fe8ff;
+      font-size: 15px
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 8px 14px
+    }
+
+    .kv div {
+      padding: 8px 10px;
+      border: 1px solid rgba(0, 229, 255, .12);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, .04)
+    }
+
+    .list {
+      padding-left: 18px;
+      margin: 0
+    }
+
+    .list li {
+      margin: 6px 0
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 229, 255, .22);
+      cursor: pointer
+    }
+
+    .media-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px
+    }
+
+    .media-block video,
+    .media-block iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+      border-radius: 12px;
+      outline: 1px solid rgba(0, 229, 255, .2)
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--ring);
+      background: rgba(0, 229, 255, .08);
+      color: #9fe8ff;
+      font-size: 12px
+    }
+
+    /* Responsive */
+    @media (max-width:900px) {
+
+      .row,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr
+      }
+
+      .wrap {
+        padding: 16px
+      }
+
+      .card {
+        border-radius: 18px;
+        padding: 18px
+      }
+    }
+
+    /* ===== REGULAMENT: liste & cod (stil) ===== */
+    #rules details {
+      border: 1px solid rgba(0, 229, 255, .18);
+      border-radius: 16px;
+      margin: 10px 0;
+      overflow: hidden;
+      background: rgba(0, 229, 255, .04);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    #rules details[open] {
+      border-color: var(--neon-blue);
+      box-shadow: 0 12px 36px rgba(0, 229, 255, .14)
+    }
+
+    #rules summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      padding: 16px 18px;
+      font-weight: 800;
+      color: #e9faff;
+      position: relative;
+    }
+
+    #rules summary::-webkit-details-marker {
+      display: none
+    }
+
+    #rules summary::after {
+      content: "+";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--neon-blue);
+      font-weight: 900;
+      transition: .2s;
+    }
+
+    #rules details[open] summary::after {
+      content: "×";
+      color: var(--neon-purple);
+      transform: translateY(-50%) rotate(90deg)
+    }
+
+    #rules details>*:not(summary) {
+      padding: 0 18px 18px
+    }
+
+    #rules ul,
+    #rules ol {
+      padding-left: 18px
+    }
+
+    #rules li {
+      margin: 6px 0;
+      color: #a6cbe6
+    }
+
+    #rules code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "JetBrains Mono", monospace;
+      font-size: 12.5px;
+      background: rgba(0, 229, 255, .08);
+      color: #aef2ff;
+      padding: 2px 6px;
+      border: 1px solid rgba(0, 229, 255, .22);
+      border-radius: 7px;
+    }
+
+    #rules pre {
+      margin: 12px 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(10, 14, 26, .9), rgba(15, 22, 36, .75));
+      border: 1px solid rgba(0, 229, 255, .18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .02), 0 12px 30px rgba(0, 0, 0, .28);
+      overflow: auto;
+    }
+
+    #rules pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      color: #d6f6ff;
+    }
+
+    #rules a {
+      color: #9fe8ff;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(0, 229, 255, .35);
+    }
+
+    #rules a:hover {
+      color: #0a0e1a;
+      background: #00e5ff;
+      border-bottom-color: transparent;
+      box-shadow: 0 0 18px rgba(0, 229, 255, .35), inset 0 0 0 4px #00e5ff;
+    }
+
+    /* ===== REGULAMENT: LISTE — bullets, numerotare, stari ===== */
+
+    /* Spacing + reset coerent */
+    #rules ul,
+    #rules ol {
+      margin: 10px 0 4px;
+      padding-left: 0;
+      /* folosim pseudo-bullets, nu implicit */
+      list-style: none;
+    }
+
+    #rules li {
+      position: relative;
+      padding: 10px 12px 10px 36px;
+      /* loc pt bullet la stanga */
+      border: 1px solid rgba(0, 229, 255, .10);
+      background: rgba(0, 229, 255, .03);
+      border-radius: 12px;
+      margin: 8px 0;
+      color: #cfe6f7;
+      transition: border-color .2s, background .2s, transform .15s;
+    }
+
+    #rules li:hover {
+      border-color: rgba(0, 229, 255, .24);
+      background: rgba(0, 229, 255, .06);
+      transform: translateY(-1px);
+    }
+
+    /* Bullet standard (punct neon) */
+    #rules li::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 16px rgba(0, 229, 255, .45);
+      background: radial-gradient(circle at 30% 30%, var(--neon-blue), var(--neon-purple));
+      outline: 2px solid rgba(0, 229, 255, .20);
+      outline-offset: 2px;
+    }
+
+    /* Niveluri imbricate — bullets mai mici si indent suplimentar */
+    #rules li li {
+      margin: 6px 0;
+      padding-left: 30px
+    }
+
+    #rules li li::before {
+      left: 10px;
+      width: 8px;
+      height: 8px;
+      box-shadow: 0 0 10px rgba(184, 92, 255, .45)
+    }
+
+    /* Liste NUMEROTATE de tip “pasi” (foloseste <ol class="list-steps">) */
+    #rules ol.list-steps {
+      counter-reset: step
+    }
+
+    #rules ol.list-steps>li {
+      padding-left: 48px;
+    }
+
+    #rules ol.list-steps>li::before {
+      counter-increment: step;
+      content: counter(step);
+      left: 10px;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font: 800 12px/1 'Inter', system-ui, sans-serif;
+      color: #0a0e1a;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      box-shadow: 0 0 20px rgba(0, 229, 255, .35);
+      outline: none;
+    }
+
+    /* Variante semantice: OK / WARN / BAD
+   Aplica pe UL/OL clasele .list-ok, .list-warn, .list-bad
+*/
+    #rules .list-ok>li {
+      border-color: rgba(0, 255, 136, .22);
+      background: linear-gradient(180deg, rgba(0, 255, 136, .06), rgba(0, 229, 255, .03));
+    }
+
+    #rules .list-ok>li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      left: 8px;
+      font: 900 13px/22px 'Inter', sans-serif;
+      text-align: center;
+      color: #0a0e1a;
+      background: #00ff88;
+      box-shadow: 0 0 18px rgba(0, 255, 136, .35);
+      outline: none;
+    }
+
+    #rules .list-warn>li {
+      border-color: rgba(255, 184, 0, .28);
+      background: linear-gradient(180deg, rgba(255, 184, 0, .08), rgba(0, 229, 255, .02));
+    }
+
+    #rules .list-warn>li::before {
+      content: "!";
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      left: 8px;
+      font: 900 14px/22px 'Inter', sans-serif;
+      text-align: center;
+      color: #0a0e1a;
+      background: #ffb800;
+      box-shadow: 0 0 18px rgba(255, 184, 0, .35);
+      outline: none;
+    }
+
+    #rules .list-bad>li {
+      border-color: rgba(255, 0, 128, .28);
+      background: linear-gradient(180deg, rgba(255, 0, 128, .08), rgba(0, 229, 255, .02));
+    }
+
+    #rules .list-bad>li::before {
+      content: "×";
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      left: 8px;
+      font: 900 14px/22px 'Inter', sans-serif;
+      text-align: center;
+      color: #0a0e1a;
+      background: #ff0080;
+      box-shadow: 0 0 18px rgba(255, 0, 128, .35);
+      outline: none;
+    }
+
+    /* Tag-uri in liste (raman compacte) */
+    #rules li .pill {
+      margin-right: 6px;
+      margin-top: 6px
+    }
+
+    /* Micro-headings in item (bold + highlight light) */
+    #rules li b,
+    #rules li strong {
+      color: #e9faff;
+      text-shadow: 0 0 12px rgba(0, 229, 255, .15);
+    }
+
+    /* Link in item — stil neon discret */
+    #rules li a {
+      border-bottom-color: rgba(0, 229, 255, .30)
+    }
+
+    #rules li a:hover {
+      background: #00e5ff;
+      color: #0a0e1a;
+      box-shadow: 0 0 14px rgba(0, 229, 255, .35), inset 0 0 0 3px #00e5ff;
+    }
+
+    /* Responsive — compacte pe ecrane mici */
+    @media (max-width: 900px) {
+      #rules li {
+        padding: 9px 10px 9px 34px;
+        border-radius: 10px
+      }
+
+      #rules ol.list-steps>li {
+        padding-left: 44px
+      }
+    }
+    .custom-cursor { display: none !important; }
+body { cursor: auto !important; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div style="display:flex;justify-content:flex-end;gap:12px;margin:8px 0 16px;">
+      <a href="admin.html">Moderare</a>
+    </div>
+
+    <div class="card">
+      <h1>Adaugă aplicație</h1>
+      <nav class="page-subnav">
+        <a href="#form">Formular</a>
+        <a href="#myAppsCard">Aplicațiile mele</a>
+        <a href="#rules">Regulament</a>
+      </nav>
+
+      <p id="status" class="muted">Verific autentificare…</p>
+
+      <!-- Gate neautentificat -->
+      <div id="gate" class="center hidden">
+        <div>
+          <p class="muted">Trebuie să te autentifici pentru a continua.</p>
+          <button id="btnLogin" class="btn">Conectează-te (Google)</button>
+        </div>
+      </div>
+
+      <!-- Non-dev -->
+      <div id="notDev" class="center hidden">
+        <div>
+          <p class="muted">Acces permis doar dezvoltatorilor.</p>
+          <p class="muted">Revino la pagina Dezvoltatori și bifează „Sunt dezvoltator”, apoi reconectează-te.</p>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <form id="form" class="">
+        <div class="row">
+          <div>
+            <label>Titlu aplicație</label>
+            <input id="title" required placeholder="Ex: Scanner QR Pro">
+          </div>
+          <div>
+            <label>Categorie</label>
+            <select id="category" required>
+              <option value="utilitare" selected>Utilitare</option>
+              <option value="retail">Retail</option>
+              <option value="logistica">Logistică</option>
+              <option value="teren">Teren</option>
+              <option value="erp-crm">ERP/CRM</option>
+              <option value="altele">Altele</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Package ID (ex: ro.mtech.scanner)</label>
+            <input id="packageId" required pattern="^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)+$" placeholder="ro.mtech.scanner">
+          </div>
+          <div class="row">
+            <div>
+              <label>Version Name</label>
+              <input id="versionName" required placeholder="1.0.0" value="1.0.0">
+            </div>
+            <div>
+              <label>Version Code</label>
+              <input id="versionCode" type="number" required placeholder="1" value="1">
+            </div>
+          </div>
+        </div>
+
+        <label>Descriere scurtă</label>
+        <textarea id="short" rows="3" required placeholder="Ce face aplicația ta?"></textarea>
+
+        <div class="row">
+          <div>
+            <label>Fișier APK</label>
+            <div class="input-file"><input id="apk" type="file" accept=".apk" required></div>
+            <div id="apkBar" class="progress" style="--val:0%"></div>
+            <div class="hint">Se calculează automat SHA-256 și dimensiunea.</div>
+          </div>
+
+          <div>
+            <label>Imagini (3–5 recomandat)</label>
+            <div class="input-file"><input id="images" type="file" accept="image/*" multiple></div>
+            <div id="imgBar" class="progress" style="--val:0%"></div>
+            <div class="hint">Poți urca orice dimensiune; maxim 10 imagini.</div>
+          </div>
+
+          <div>
+            <label>Upload Video MP4 — opțional</label>
+            <div class="input-file"><input id="videoMp4" type="file" accept="video/mp4"></div>
+            <div id="vidBar" class="progress" style="--val:0%"></div>
+          </div>
+        </div>
+
+        <div class="section-title">Demo Pack</div>
+        <label>Quick Start (1 pas / linie)</label>
+        <textarea id="quickStart" rows="5" placeholder="1) Instalează APK-ul
+2) Permite Camera
+3) Autentifică-te cu cont demo..."></textarea>
+
+        <label>Permisiuni & motiv</label>
+        <textarea id="permRationale" rows="3"
+          placeholder="CAMERA - scanare QR; ACCESS_FINE_LOCATION - hartă traseu"></textarea>
+
+        <div class="row">
+          <div>
+            <label>Funcționalități (1 / linie)</label>
+            <textarea id="features" rows="3" placeholder="Scan QR
+Export CSV
+Mod offline"></textarea>
+          </div>
+          <div>
+            <label>Limitări demo (1 / linie)</label>
+            <textarea id="limitations" rows="3" placeholder="Max 50 scanări/sesiune
+Watermark pe export"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Limbi UI (separate prin virgulă)</label>
+            <input id="locales" placeholder="ro,en" value="ro">
+          </div>
+          <div>
+            <label>Tag-uri (virgulă)</label>
+            <input id="tags" placeholder="utilitar, camera, offline">
+          </div>
+        </div>
+
+        <div class="section-title">Business</div>
+        <div class="grid-3">
+          <div>
+            <label>Preț de la (EUR)</label>
+            <input id="pricingFrom" type="number" min="0" step="50" placeholder="800">
+          </div>
+          <div>
+            <label>SLA răspuns (ore)</label>
+            <input id="slaHours" type="number" min="1" step="1" placeholder="24">
+          </div>
+          <div>
+            <label>Customizări oferite</label>
+            <div class="inline" style="flex-wrap:wrap">
+              <label class="chip"><input type="checkbox" id="cBranding">&nbsp;Branding</label>
+              <label class="chip"><input type="checkbox" id="cIntegrari">&nbsp;Integrare ERP/CRM</label>
+              <label class="chip"><input type="checkbox" id="cModuri">&nbsp;Moduri offline/teren</label>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <button class="btn primary" type="submit" id="btnSubmit">Publică aplicația</button>
+          <span id="saveState" class="muted"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- MY APPS -->
+    <div class="card" id="myAppsCard" style="margin-top:16px">
+      <h2 style="margin:0 0 6px">Aplicațiile mele</h2>
+      <p class="muted">Vezi statusul, motivarea și descarcă APK-ul (preview).</p>
+      <div id="myApps"></div>
+    </div>
+  </div>
+
+  <!-- ===== REGULAMENT COMPLET (exact ca la tine) ===== -->
+  <div class="wrap">
+    <div class="card" id="rules">
+      <h2 style="margin:0 0 8px">Regulament publicare aplicații</h2>
+      <h3 style="text-decoration: underline;">Click pe fiecare linie de mai jos pentru aprofundare</h3>
+      <p class="muted" style="margin:0 0 12px">Standard minim de calitate pentru aplicațiile demo Android.</p>
+
+      <details open>
+        <summary><strong>Scop &amp; context</strong></summary>
+        <p>Descrie cerințele minime și standardul de calitate pentru aplicațiile demo Android încărcate de dezvoltatori
+          pe MTECH Digital, astfel încât companiile să poată testa rapid și să contacteze dezvoltatorii pentru proiecte
+          plătite.</p>
+      </details>
+
+      <details>
+        <summary><strong>Cine poate publica</strong></summary>
+        <ul>
+          <li>Doar utilizatori autentificați care au flag-ul <b>„Sunt dezvoltator”</b> în profil.</li>
+          <li>Publicarea este individuală (pe cont); responsabilitatea legală și de conformitate aparține
+            dezvoltatorului.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Fluxul de publicare</strong></summary>
+        <ol class="list-steps">
+          <li>Completezi formularul „Adaugă aplicație”.</li>
+          <li>Încarci <b>APK-ul</b>, <b>minim 3 imagini</b> (max. 10) și opțional un <b>video</b> (YouTube sau MP4).
+          </li>
+          <li>Trimiți. Aplicația intră în <b>PENDING</b>.</li>
+          <li>Moderatorul verifică; poate cere <b>NEEDS-FIX</b> sau <b>APROBA/RESPINGE</b>.</li>
+          <li>Primești notificare pe e-mail; în „Aplicațiile mele” vezi motivarea la <b>NEEDS-FIX/RESPINS</b>.</li>
+        </ol>
+      </details>
+
+      <details>
+        <summary><strong>Câmpuri obligatorii</strong></summary>
+        <ul>
+          <li><b>Titlu aplicație</b> — nume comercial scurt (ex: „Scanner QR Pro”); fără CAPSLOCK integral; 24–48
+            caractere recomandat.</li>
+          <li><b>Categorie</b> — utilitare / retail / logistică / teren / ERP-CRM / altele.</li>
+          <li><b>Package ID</b> — format Java-style (ex: <code>ro.mtech.scanner</code>), fără spații; litere, cifre,
+            <code>_</code> și puncte.
+          </li>
+          <li><b>Version Name</b> (ex: <code>1.2.0</code>) și <b>Version Code</b> (întreg &gt; 0).</li>
+          <li><b>Descriere scurtă</b> — 150–300 caractere (ce face aplicația și pentru cine).</li>
+          <li><b>Quick Start</b> — minim 3 pași (1 linie/paș). Exemplu: „Instalează APK-ul”, „Permite Camera”,
+            „Autentifică-te cu cont demo”.</li>
+          <li><b>Permisiuni &amp; motiv</b> — format <code>ANDROID.PERMISSION.XYZ - motiv</code> (1/linie).</li>
+          <li><b>Funcționalități</b>, <b>Limitări demo</b>, <b>Limbi UI</b> (coduri, ex: <code>ro,en</code>).</li>
+          <li><b>Business</b> — „Preț de la (EUR)”, „SLA răspuns (ore)”, tipuri de customizare
+            (branding/integrări/moduri teren).</li>
+          <li><b>Tag-uri</b> — max. 8, separate prin virgulă.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Media &amp; limite</strong></summary>
+        <ul>
+          <li><b>Imagini</b>: 3–10 buc., 1080×1920 / 1920×1080, raport 9:16 / 16:9 (±10%), ≤ 4 MB / imagine, PNG/JPG;
+            capturi reale, lizibile, fără date sensibile.</li>
+          <li><b>Video (opțional)</b>: YouTube URL sau MP4 ≤ 180s, ≤ 50 MB, max 1080p, <code>video/mp4</code>; demo UI +
+            task-uri reale, fără muzică cu drepturi neclare.</li>
+          <li><b>APK</b>: ≤ 200 MB; semnat (debug acceptat pentru demo); fără ad-ware/SDK-uri neautorizate; fără
+            colectare nejustificată de date; permisiunile „periculoase” trebuie motivate.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Criterii de calitate &amp; motive comune de respingere</strong></summary>
+        <ul>
+          <li>Imagini insuficiente/blurate sau text ilizibil.</li>
+          <li>Video prea lung (&gt; 3 minute) sau fișier &gt; 50 MB.</li>
+          <li>Descriere vagă; Quick Start sub 3 pași; lipsesc credențiale demo.</li>
+          <li>Permisiuni „periculoase” fără justificare.</li>
+          <li>APK crash-uiește la pornire sau conținut ofensator.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Moderare &amp; notificări</strong></summary>
+        <ul>
+          <li><b>Statusuri</b>: PENDING / NEEDS-FIX / APPROVED / REJECTED.</li>
+          <li>Primești e-mail la schimbarea statusului; motivul apare și în „Aplicațiile mele”.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Exemplu de „tipar” acceptat</strong></summary>
+        <ul>
+          <li>Titlu: „Inventar rapid magazin”; Categorie: retail; Package ID: <code>ro.firma.inventar</code>.</li>
+          <li>Version Name/Code: <code>1.1.0</code> / <code>11</code>; descriere scurtă clară.</li>
+          <li>Quick Start (min. 3 pași), permisiuni motivate, 5 imagini 1080×1920, video YouTube 120s.</li>
+          <li>Limitări demo: 100 produse/sesiune, export CSV watermark.</li>
+          <li>Business: de la 1200 EUR, SLA 24h, customizări: branding &amp; integrări ERP.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Securitate &amp; confidențialitate</strong></summary>
+        <ul>
+          <li>Nu încărca date reale ale clienților; folosește conturi/endpoint-uri demo.</li>
+          <li>Nu insera chei secrete sau URL-uri interne în APK.</li>
+          <li>Respectă GDPR pentru orice date personale.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>SLA de moderare</strong></summary>
+        <p>24–72h în mod normal; în vârf de trafic: până la 5 zile.</p>
+      </details>
+
+      <details>
+        <summary><strong>Anexă A — Validări tehnice (automat)</strong></summary>
+        <ul>
+          <li>Imagini: număr 3–10; fiecare ≤ 4 MB; raport 9:16/16:9 (±10%); min. 720px pe latura mică.</li>
+          <li>Video MP4 (dacă este): <code>contentType=video/mp4</code>, durată ≤ 180s, dimensiune ≤ 50 MB.</li>
+          <li>APK: <code>contentType=application/vnd.android.package-archive</code>, dimensiune ≤ 200 MB.</li>
+          <li>Se calculează SHA-256 pentru APK; se extrag permisiunile din manifest.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Anexă B — Mesaje de moderare (șabloane)</strong></summary>
+        <p><b>NEEDS-FIX</b></p>
+        <ul>
+          <li>„Imaginea 2 este sub rezoluția minimă. Încarcă imagini 1080×1920.”</li>
+          <li>„Video depășește 180s. Te rugăm scurtează la max 3 minute.”</li>
+          <li>„Permisiunea ACCESS_FINE_LOCATION nu e justificată. Adaugă motiv la ‘Permisiuni &amp; motiv’.”</li>
+        </ul>
+        <p><b>REJECTED</b></p>
+        <ul>
+          <li>„APK crash la pornire pe Android 12. Recompilează și retrimite.”</li>
+          <li>„Conține reclame intruzive / conținut neconform. Elimină și retrimite.”</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Întrebări frecvente</strong></summary>
+        <ul>
+          <li><b>Backend privat?</b> Da, dar folosește conturi/endpoint-uri demo.</li>
+          <li><b>Camere/hartă?</b> Da, cu motiv clar în „Permisiuni &amp; motiv”.</li>
+          <li><b>Cum mă contactează clienții?</b> Prin formularul din pagina aplicației; e-mailul tău din profil.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <!-- ===================== JS ===================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    import { getFirestore, doc, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyDg_P0xmt22HyVNQbFQqH9ASP68sJ0b2j8",
+      authDomain: "mtechdigital-2449f.firebaseapp.com",
+      projectId: "mtechdigital-2449f",
+      storageBucket: "mtechdigital-2449f.firebasestorage.app"
+    });
+    const auth = getAuth(app);
+    const storage = getStorage(app, "gs://mtechdigital-2449f.firebasestorage.app");
+    const db = getFirestore(app);
+
+    const statusEl = document.getElementById('status');
+    const gate = document.getElementById('gate');
+    const notDev = document.getElementById('notDev');
+    const formEl = document.getElementById('form');
+    const btnLogin = document.getElementById('btnLogin');
+    const show = el => el.classList.remove('hidden');
+    const hide = el => el.classList.add('hidden');
+
+    btnLogin?.addEventListener('click', async () => { await signInWithPopup(auth, new GoogleAuthProvider()); });
+
+    async function ensureDeveloperFlag(user, db) {
+      if (!user) return;
+      const uref = doc(db, "users", user.uid);
+      const usnap = await getDoc(uref);
+      const val = usnap.exists() ? usnap.data()?.isDeveloper : undefined;
+      if (val !== true) await setDoc(uref, { isDeveloper: true }, { merge: true });
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        statusEl.textContent = "Trebuie să te autentifici pentru a continua.";
+        show(gate); hide(notDev); hide(formEl);
+        return;
+      }
+      await ensureDeveloperFlag(user, db);
+
+      const snap = await getDoc(doc(db, "users", user.uid));
+      const isDev = snap.exists() && snap.data()?.isDeveloper === true;
+
+      if (!isDev) {
+        statusEl.textContent = "Acces permis doar dezvoltatorilor.";
+        hide(gate); show(notDev); hide(formEl);
+        return;
+      }
+
+      statusEl.innerHTML = `Autentificat ca <strong>${user.displayName || user.email}</strong>. Poți publica aplicația.`;
+      hide(gate); hide(notDev); show(formEl);
+      subscribeMyApps(user.uid);
+    });
+
+    // ---------- helpers ----------
+    const toHex = buffer => [...new Uint8Array(buffer)].map(b => b.toString(16).padStart(2, '0')).join('');
+    async function sha256File(file) { const buf = await file.arrayBuffer(); const hash = await crypto.subtle.digest('SHA-256', buf); return toHex(hash); }
+    const list = s => (s || '').split('\n').map(x => x.replace(/^\d+[\).\s]*/, '').trim()).filter(Boolean);
+    const csv = s => (s || '').split(',').map(x => x.trim()).filter(Boolean);
+    const kvPerms = s => (s || '').split(';').map(x => x.trim()).filter(Boolean).map(p => {
+      const [name, reason = ''] = p.split(/\s*-\s*/);
+      const full = name?.startsWith('android.') ? name : `android.permission.${(name || '').toUpperCase()}`;
+      return { name: full, reason };
+    });
+    function bytes(n) { if (!n && n !== 0) return '—'; const u = ['B', 'KB', 'MB', 'GB']; let i = 0, v = n; while (v >= 1024 && i < u.length - 1) { v /= 1024; i++; } return `${v.toFixed(i ? 1 : 0)} ${u[i]}`; }
+    function esc(s) { return String(s || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[m])); }
+    function ytEmbed(url) { if (!url) return null; const m = String(url).match(/(?:youtu\.be\/|v=)([\w\-]{6,})/i); return m ? `https://www.youtube.com/embed/${m[1]}` : null; }
+    function setList(ulOrOl, items) { ulOrOl.innerHTML = (items && items.length) ? items.map(x => `<li>${esc(typeof x === 'string' ? x : (x.text || JSON.stringify(x)))}</li>`).join('') : '<li>—</li>'; }
+    function setPerms(ul, perms) {
+      ul.innerHTML = (perms && perms.length)
+        ? perms.map(p => `<li><b>${esc(p.name || 'PERM')}</b>${p.reason ? ` — ${esc(p.reason)}` : ''}</li>`).join('')
+        : '<li>—</li>';
+    }
+    function metaLine(app) {
+      const imgs = app.media?.images?.length || app.images?.length || 0;
+      const v = app.media || {};
+      const dur = v.videoMp4Meta?.durationSec ? ` • Video: ${Math.round(v.videoMp4Meta.durationSec)}s`
+        : (v.videoMp4 ? ' • Video: MP4' : (v.videoUrl ? ' • Video: YouTube' : ''));
+      const apkMb = ((app.apk?.sizeBytes || 0) / 1024 / 1024).toFixed(1);
+      return `Imagini: ${imgs}${dur} • APK: ${apkMb} MB`;
+    }
+
+    // ---------- FORM SUBMIT ----------
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const u = auth.currentUser;
+      if (!u) return alert("Autentifică-te mai întâi.");
+
+      const title = document.getElementById('title').value.trim();
+      const category = document.getElementById('category').value.trim();
+      const packageId = document.getElementById('packageId').value.trim();
+      const versionName = document.getElementById('versionName').value.trim();
+      const versionCode = Number(document.getElementById('versionCode').value.trim() || '0');
+      const short = document.getElementById('short').value.trim();
+
+      const tagsRaw = document.getElementById('tags').value.trim();
+      const apkFile = document.getElementById('apk').files?.[0];
+      const imageFiles = Array.from(document.getElementById('images').files || []);
+      const videoMp4File = document.getElementById('videoMp4').files?.[0];
+
+      const quickStart = list(document.getElementById('quickStart').value);
+      const permissions = kvPerms(document.getElementById('permRationale').value);
+      const features = list(document.getElementById('features').value);
+      const limitations = list(document.getElementById('limitations').value);
+      const locales = csv(document.getElementById('locales').value || 'ro');
+
+      const pricingFrom = Number(document.getElementById('pricingFrom').value || '0') || null;
+      const slaHours = Number(document.getElementById('slaHours').value || '0') || null;
+      const customization = [
+        document.getElementById('cBranding').checked ? 'branding' : null,
+        document.getElementById('cIntegrari').checked ? 'integrari' : null,
+        document.getElementById('cModuri').checked ? 'moduri' : null
+      ].filter(Boolean);
+
+      if (!title || !short || !packageId || !versionName || !versionCode) return alert("Completează câmpurile de bază.");
+      if (!apkFile) return alert("Alege un fișier APK.");
+      if (quickStart.length < 3) return alert("Quick Start minim 3 pași.");
+      if (imageFiles.length < 3 && !videoMp4File) return alert("Încarcă minim 3 imagini sau un video MP4.");
+      if (imageFiles.length > 10) return alert("Maxim 10 imagini.");
+
+      const btn = document.getElementById('btnSubmit');
+      const saveState = document.getElementById('saveState');
+      btn.disabled = true;
+
+      const uid = u.uid;
+      const stamp = Date.now();
+      const id = `${uid}_${stamp}`;
+
+      // pre-create doc
+      try {
+        await setDoc(doc(db, "apps", id), {
+          id, ownerUid: uid, status: "pending", downloads: 0, apkUrl: null,
+          title, short, category,
+          author: u.displayName || "Anonim",
+          authorEmail: u.email || null,
+          createdAt: serverTimestamp()
+        }, { merge: false });
+      } catch (err) {
+        console.error("pre-create failed", err);
+        alert("Nu am putut pregăti documentul de aplicație.");
+        btn.disabled = false; return;
+      }
+
+      // upload images
+      const media = { images: [], videoUrl: null, videoMp4: null, videoMp4Meta: null };
+      const imgs = imageFiles.slice(0, 10);
+      for (let i = 0; i < imgs.length; i++) {
+        const imgRef = ref(storage, `assets/img/apps/${uid}/${stamp}/${i + 1}_${imgs[i].name}`);
+        const task = uploadBytesResumable(imgRef, imgs[i]);
+        await new Promise((res, rej) => {
+          task.on('state_changed', s => {
+            const pct = Math.round(s.bytesTransferred / s.totalBytes * 100);
+            document.getElementById('imgBar').style.setProperty('--val', pct + '%');
+            saveState.textContent = `Upload imagine ${i + 1}/${imgs.length}: ${pct}%`;
+          }, rej, res);
+        });
+        media.images.push(await getDownloadURL(task.snapshot.ref));
+      }
+
+      // upload mp4 (optional) cu limite 180s/50MB
+      if (videoMp4File) {
+        const urlTmp = URL.createObjectURL(videoMp4File);
+        await new Promise((res, rej) => {
+          const v = document.createElement('video');
+          v.preload = 'metadata';
+          v.onloadedmetadata = () => {
+            const ok = v.duration <= 180 && videoMp4File.size <= 50 * 1024 * 1024;
+            URL.revokeObjectURL(urlTmp);
+            if (!ok) rej(new Error("Video prea mare sau prea lung.")); else res();
+          };
+          v.onerror = rej; v.src = urlTmp;
+        });
+        const vRef = ref(storage, `assets/video/apps/${uid}/${stamp}/demo.mp4`);
+        const vTask = uploadBytesResumable(vRef, videoMp4File, { contentType: "video/mp4" });
+        await new Promise((res, rej) => {
+          vTask.on('state_changed', s => {
+            const pct = Math.round(s.bytesTransferred / s.totalBytes * 100);
+            document.getElementById('vidBar').style.setProperty('--val', pct + '%');
+            saveState.textContent = `Upload video: ${pct}%`;
+          }, rej, res);
+        });
+        media.videoMp4 = await getDownloadURL(vTask.snapshot.ref);
+      }
+
+      // upload APK
+      const apkRef = ref(storage, `downloads/${uid}/${stamp}/${apkFile.name}`);
+      const apkTask = uploadBytesResumable(apkRef, apkFile, {
+        contentType: apkFile.type || "application/vnd.android.package-archive"
+      });
+      await new Promise((res, rej) => {
+        apkTask.on('state_changed', s => {
+          const pct = Math.round(s.bytesTransferred / s.totalBytes * 100);
+          document.getElementById('apkBar').style.setProperty('--val', pct + '%');
+          saveState.textContent = `Upload APK: ${pct}%`;
+        }, rej, res);
+      });
+
+      const apkStoragePath = apkTask.snapshot.ref.fullPath;
+
+      // sha256
+      let apkSha256 = ''; try { saveState.textContent = "Calculez SHA-256…"; apkSha256 = await sha256File(apkFile); } catch { }
+
+      const demo = { quickStart, permissions, features, limitations, locales };
+      const business = { customization, slaHours, pricingFromEur: pricingFrom };
+      const tagsArr = tagsRaw ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+      const apkClient = {
+        url: null,
+        sizeBytes: apkFile.size,
+        sha256: apkSha256,
+        packageId,
+        versionName,
+        versionCode,
+        storagePath: apkStoragePath,   // NEW
+        fileName: apkFile.name         // NEW (fallback util)
+      };
+      try {
+        saveState.textContent = "Salvez metadate…";
+        await setDoc(doc(db, "apps", id), {
+          images: media.images, media, demo, business, apk: apkClient, tags: tagsArr
+        }, { merge: true });
+      } catch (err) {
+        console.error('Firestore update failed', err);
+        alert('Scriere în Firestore refuzată de reguli.');
+        btn.disabled = false; return;
+      }
+
+      saveState.innerHTML = `✅ Aplicația a fost încărcată. <strong>Status: în așteptare</strong>.`;
+      formEl.reset(); btn.disabled = false;
+    });
+
+async function tryGetAppCheckToken(app) {
+  try {
+    const {
+      initializeAppCheck,
+      getToken,
+      getLimitedUseToken,
+      ReCaptchaEnterpriseProvider
+    } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js");
+
+    let appCheck;
+
+    // 1) If you HAVE a site key, uncomment the next two lines and set it.
+    // const provider = new ReCaptchaEnterpriseProvider("RECAPTCHA_ENTERPRISE_SITE_KEY");
+    // appCheck = initializeAppCheck(app, { provider, isTokenAutoRefreshEnabled: true });
+
+    // 2) If you DON'T have a site key yet, init without provider and use limited-use tokens.
+    if (!appCheck) appCheck = initializeAppCheck(app, { isTokenAutoRefreshEnabled: false });
+
+    // Try normal token first (only works if provider is set)
+    try {
+      const r = await getToken(appCheck, /* forceRefresh */ false);
+      if (r?.token) return r.token;
+    } catch { /* fall through to limited-use */ }
+
+    // Fallback that DOES NOT require provider:
+    const lu = await getLimitedUseToken(appCheck);
+    return lu?.token || null;
+  } catch {
+    return null; // no App Check at all — let the call proceed without header
+  }
+}
+
+
+
+  async function issueApkUrlPreviewOwner(id) {
+    const u = auth.currentUser;
+    if (!u) throw new Error("Nu esti autentificat.");
+    const appCheckToken = await tryGetAppCheckToken(app);
+
+    // incercare 1 (idToken curent)
+    let idToken = await u.getIdToken(/* forceRefresh */ false);
+
+    const issueOnce = async (idTok) => {
+      const url = new URL("https://us-central1-mtechdigital-2449f.cloudfunctions.net/issueApkUrlPreview");
+      url.searchParams.set("id", id);
+
+      const headers = { "Authorization": `Bearer ${idTok}` };
+      if (appCheckToken) headers["X-Firebase-AppCheck"] = appCheckToken;
+
+      const r = await fetch(url, { method: "GET", headers });
+      if (!r.ok) {
+        const body = await r.text().catch(()=>"");
+        throw new Error(`issueApkUrlPreview ${r.status}: ${body || "unauthorized"}`);
+      }
+      const j = await r.json();
+      return j.url;
+    };
+
+    try {
+      return await issueOnce(idToken);
+    } catch (e) {
+      // daca e 401, reimprospatam idToken si mai incercam o data
+      if (String(e).includes("401")) {
+        idToken = await u.getIdToken(/* forceRefresh */ true);
+        return await issueOnce(idToken);
+      }
+      throw e;
+    }
+  }
+
+
+    // ===== Drawer =====
+    const M = {
+      drawer: document.getElementById('myapps-drawer'),
+      backdrop: document.getElementById('myapps-backdrop'),
+      close: document.getElementById('mClose'),
+      mTitle: document.getElementById('mTitle'),
+      mMeta: document.getElementById('mMeta'),
+      mApkBadge: document.getElementById('mApkBadge'),
+      mMedia: document.getElementById('mMedia'),
+      mGallery: document.getElementById('mGallery'),
+      mMediaMeta: document.getElementById('mMediaMeta'),
+      mkTitle: document.getElementById('mkTitle'),
+      mkCategory: document.getElementById('mkCategory'),
+      mkShort: document.getElementById('mkShort'),
+      mkTags: document.getElementById('mkTags'),
+      mkPkg: document.getElementById('mkPkg'),
+      mkVname: document.getElementById('mkVname'),
+      mkVcode: document.getElementById('mkVcode'),
+      mkApkSize: document.getElementById('mkApkSize'),
+      mkSha: document.getElementById('mkSha'),
+      mkQS: document.getElementById('mkQS'),
+      mkPerms: document.getElementById('mkPerms'),
+      mkFeatures: document.getElementById('mkFeatures'),
+      mkLimits: document.getElementById('mkLimits'),
+      mkLocales: document.getElementById('mkLocales'),
+    };
+    let _currentId = null;
+    function openDrawer() { M.drawer?.classList.add('open'); M.backdrop?.classList.add('show'); }
+    function closeDrawer() { M.drawer?.classList.remove('open'); M.backdrop?.classList.remove('show'); _currentId = null; }
+    M.close?.addEventListener('click', closeDrawer);
+    M.backdrop?.addEventListener('click', closeDrawer);
+
+    function setListEl(el, items) { el.innerHTML = (items && items.length) ? items.map(x => `<li>${esc(x)}</li>`).join('') : '<li>—</li>'; }
+    // NEW: descarca pe baza unei cai din Storage
+    async function downloadFromStoragePath(storagePath) {
+      const fileRef = ref(storage, storagePath);
+      const url = await getDownloadURL(fileRef);
+      const w = window.open(url, "_blank", "noopener");
+      if (!w) alert("Permite pop-ups pentru a descarca APK.");
+    }
+
+    function fillDrawer(id, a) {
+      _currentId = id;
+      const created = a.createdAt?.toDate ? a.createdAt.toDate() : null;
+      M.mTitle.textContent = a.title || id;
+      M.mMeta.textContent = `${a.author || 'Anonim'}${a.authorEmail ? ' • ' + a.authorEmail : ''}${created ? ' • ' + created.toLocaleString() : ''} • ${a.status || 'pending'}`;
+      const ver = (a.apk?.versionName || a.version || '1.0');
+      M.mApkBadge.textContent = `APK: v${ver} • ${bytes(a.apk?.sizeBytes)}`;
+
+      // media
+      M.mMedia.innerHTML = ''; M.mGallery.innerHTML = '';
+      const m = a.media || {};
+      if (m.videoMp4) {
+        const v = document.createElement('video'); v.controls = true; v.playsInline = true; v.src = m.videoMp4; M.mMedia.appendChild(v);
+      }
+      const emb = (m.videoUrl ? ytEmbed(m.videoUrl) : null);
+      if (emb) {
+        const ifr = document.createElement('iframe');
+        ifr.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share";
+        ifr.referrerPolicy = "no-referrer-when-downgrade";
+        ifr.src = emb; M.mMedia.appendChild(ifr);
+      }
+      const imgs = (a.images || m.images || []);
+      M.mGallery.innerHTML = imgs.map(u => `<img src="${esc(u)}" alt="preview" loading="lazy">`).join('');
+      Array.from(M.mGallery.querySelectorAll('img')).forEach(img => img.addEventListener('click', () => window.open(img.src, '_blank', 'noopener')));
+      M.mMediaMeta.textContent = metaLine(a);
+
+      // descriere/tags
+      M.mkTitle.textContent = a.title || '—';
+      M.mkCategory.textContent = a.category || '—';
+      M.mkShort.textContent = a.short || '—';
+      M.mkTags.innerHTML = (a.tags || []).map(t => `<span class="pill" style="padding:6px 10px">${esc(t)}</span>`).join('') || '—';
+
+      // apk fields
+      M.mkPkg.textContent = a.apk?.packageId || a.packageId || '—';
+      M.mkVname.textContent = a.apk?.versionName || a.version || '—';
+      M.mkVcode.textContent = (a.apk?.versionCode != null ? a.apk.versionCode : a.versionCode) ?? '—';
+      M.mkApkSize.textContent = bytes(a.apk?.sizeBytes);
+      M.mkSha.textContent = a.apk?.sha256 || '—';
+
+      // demo pack
+      const d = a.demo || {};
+      setListEl(M.mkQS, d.quickStart || []);
+      setPerms(M.mkPerms, d.permissions || []);
+      setListEl(M.mkFeatures, d.features || []);
+      setListEl(M.mkLimits, d.limitations || []);
+      M.mkLocales.textContent = (d.locales && d.locales.length) ? d.locales.join(', ') : '—';
+
+      openDrawer();
+    }
+
+    // ===== RENDER MY APPS + ACTIONS =====
+    function renderMyAppsCard(d, id) {
+      const created = d.createdAt?.toDate ? d.createdAt.toDate() : null;
+      const when = created ? created.toLocaleString() : '';
+      const status = (d.status || 'pending').toLowerCase();
+      return `
+        <div class="card status-${status}">
+          <span class="status-badge">${status.toUpperCase()}</span>
+          <div class="app-head">
+            <div>
+              <h3 style="margin:0">${esc(d.title || id)}</h3>
+              <div class="app-meta">Status: <b>${esc(status)}</b>${when ? ` • ${esc(when)}` : ''}</div>
+            </div>
+            <div class="app-actions">
+              <button class="btn-mini" data-act="open" data-id="${id}">Vezi detalii</button>
+
+            </div>
+          </div>
+          ${d.review?.reason ? `<p style="margin:0"><b>Motiv:</b> ${esc(d.review.reason)}</p>` : ""}
+        </div>
+      `;
+    }
+
+    function subscribeMyApps(uid) {
+      import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js").then(async ({ collection, query, where, onSnapshot, orderBy, doc, getDoc }) => {
+        const q = query(collection(db, "apps"), where("ownerUid", "==", uid), orderBy("createdAt", "desc"));
+        const root = document.getElementById('myApps');
+
+        onSnapshot(q, (snap) => {
+          root.innerHTML = "";
+          snap.forEach(d => root.insertAdjacentHTML('beforeend', renderMyAppsCard(d.data(), d.id)));
+          if (snap.empty) root.innerHTML = `<p class="muted">Încă nu ai aplicații publicate.</p>`;
+        });
+
+        // actiuni
+        root.addEventListener('click', async (e) => {
+          const b = e.target.closest('.btn-mini[data-act]'); if (!b) return;
+          const id = b.getAttribute('data-id'); const act = b.getAttribute('data-act');
+
+          if (act === 'open') {
+            const s = await getDoc(doc(db, 'apps', id));
+            if (!s.exists()) { alert('Document inexistent.'); return; }
+            fillDrawer(id, s.data());
+            return;
+          }
+        });
+      });
+    }
+  </script>
+
+  <!-- Drawer markup (plasat la final pt a nu incurca layout-ul) -->
+  <div id="myapps-backdrop" class="drawer-backdrop"></div>
+  <aside id="myapps-drawer" class="drawer" aria-hidden="true">
+    <div class="head">
+      <div>
+        <div id="mTitle" style="font-weight:800"></div>
+        <div id="mMeta" class="muted" style="font-size:13px"></div>
+      </div>
+      <div class="row" style="display:flex;gap:8px">
+        <button class="btn" id="mClose">Închide</button>
+      </div>
+    </div>
+    <div class="body">
+<div class="sec">
+  <span id="mApkBadge" class="pill">APK: —</span>
+</div>
+
+
+      <div class="sec">
+        <h4>Media</h4>
+        <div class="media-block" id="mMedia"></div>
+        <div class="gallery" id="mGallery"></div>
+        <div class="muted" id="mMediaMeta"></div>
+      </div>
+
+      <div class="sec">
+        <h4>Descriere</h4>
+        <div class="kv">
+          <div>Titlu</div>
+          <div id="mkTitle">—</div>
+          <div>Categorie</div>
+          <div id="mkCategory">—</div>
+          <div>Scurt</div>
+          <div id="mkShort">—</div>
+          <div>Tag-uri</div>
+          <div id="mkTags">—</div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h4>APK & versiuni</h4>
+        <div class="kv">
+          <div>Package</div>
+          <div id="mkPkg">—</div>
+          <div>Version Name</div>
+          <div id="mkVname">—</div>
+          <div>Version Code</div>
+          <div id="mkVcode">—</div>
+          <div>Dimensiune</div>
+          <div id="mkApkSize">—</div>
+          <div>SHA-256</div>
+          <div id="mkSha">—</div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h4>Demo pack</h4>
+        <div class="kv">
+          <div>Quick Start</div>
+          <div>
+            <ol id="mkQS" class="list"></ol>
+          </div>
+          <div>Permisiuni & motiv</div>
+          <div>
+            <ul id="mkPerms" class="list"></ul>
+          </div>
+          <div>Funcționalități</div>
+          <div>
+            <ul id="mkFeatures" class="list"></ul>
+          </div>
+          <div>Limitări</div>
+          <div>
+            <ul id="mkLimits" class="list"></ul>
+          </div>
+          <div>Limbi UI</div>
+          <div id="mkLocales">—</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</body>
+
+</html>

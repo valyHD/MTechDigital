@@ -1,0 +1,2673 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub Dezvoltatori Android • MTECH Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --neon-blue: #00e5ff;
+      --neon-purple: #b85cff;
+      --neon-pink: #ff0080;
+      --neon-green: #00ff88;
+      --deep-1: #0a0e1a;
+      --deep-2: #0f1624;
+      --text: #e5f6ff;
+      --muted: #8b9cb8;
+      --accent: #a3cef1;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html { 
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+      height: 100%;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--deep-1) 0%, var(--deep-2) 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+      cursor: none;
+      position: relative;
+    }
+
+    /* ========== FLOATING GRADIENT ORBS ========== */
+    .gradient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 1;
+      animation: float 25s infinite ease-in-out;
+    }
+
+    .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--neon-blue) 0%, transparent 70%);
+      top: -250px;
+      left: -250px;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--neon-purple) 0%, transparent 70%);
+      top: 20%;
+      right: -350px;
+      animation-delay: -8s;
+    }
+
+    .orb-3 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
+      bottom: 5%;
+      left: 5%;
+      animation-delay: -16s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(120px, -120px) scale(1.15); }
+      66% { transform: translate(-120px, 120px) scale(0.85); }
+    }
+
+    /* ========== GEOMETRIC SHAPES ========== */
+    .geometric-shapes {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.06;
+      animation: rotate 35s linear infinite;
+      border-radius: 20%;
+    }
+
+    .shape-1 {
+      width: 250px;
+      height: 250px;
+      border: 3px solid var(--neon-blue);
+      top: 8%;
+      right: 12%;
+      animation-duration: 45s;
+    }
+
+    .shape-2 {
+      width: 180px;
+      height: 180px;
+      border: 3px solid var(--neon-purple);
+      bottom: 15%;
+      left: 8%;
+      animation-duration: 40s;
+      animation-direction: reverse;
+    }
+
+    .shape-3 {
+      width: 120px;
+      height: 120px;
+      border: 2px solid var(--neon-pink);
+      top: 45%;
+      left: 45%;
+      animation-duration: 50s;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== SCAN LINES ========== */
+    .scan-lines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 229, 255, 0.02) 0px,
+        transparent 1px,
+        transparent 2px,
+        rgba(0, 229, 255, 0.02) 3px
+      );
+      animation: scan 10s linear infinite;
+    }
+
+    @keyframes scan {
+      from { transform: translateY(0); }
+      to { transform: translateY(10px); }
+    }
+
+    /* ========== Custom Cursor ========== */
+    .custom-cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--neon-blue);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+      mix-blend-mode: difference;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .custom-cursor::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid var(--neon-blue);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .custom-cursor.hover {
+      width: 45px;
+      height: 45px;
+      border-color: var(--neon-purple);
+      background: rgba(184,92,255,0.12);
+    }
+
+    .custom-cursor.hover::before {
+      opacity: 0.4;
+      animation: pulse-ring 1.2s ease-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.9); opacity: 0.4; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* ========== Three.js Canvas ========== */
+    #scene-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ========== Enhanced Grid ========== */
+    #tech-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.08;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 25s linear infinite;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    @keyframes gridMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
+    }
+
+    /* ========== Scroll Progress ========== */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+      z-index: 1001;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.1s ease;
+      box-shadow: 0 0 20px var(--neon-blue);
+    }
+
+    /* ========== Minimap ========== */
+    .minimap {
+      position: fixed;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .minimap-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(0,229,255,0.2);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .minimap-dot.active {
+      background: var(--neon-blue);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 30px var(--neon-blue);
+      width: 18px;
+      height: 18px;
+    }
+
+    .minimap-dot:hover {
+      transform: scale(1.4);
+      background: var(--neon-purple);
+      box-shadow: 0 0 20px var(--neon-purple);
+    }
+
+    .minimap-dot::after {
+      content: attr(data-label);
+      position: absolute;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10,14,26,0.95);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      border: 1px solid rgba(0,229,255,0.3);
+    }
+
+    .minimap-dot:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(-8px);
+    }
+
+    /* ========== Header ========== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 0;
+      backdrop-filter: blur(16px) saturate(180%);
+      background: rgba(10,14,26,0.3);
+      border-bottom: 1px solid rgba(0,229,255,0.06);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    header.scrolled {
+      padding: 14px 0;
+      background: rgba(10,14,26,0.9);
+      border-bottom-color: rgba(0,229,255,0.25);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .brand:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0 8px 20px rgba(0,229,255,0.4));
+    }
+
+    .logo-box {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 50%, var(--neon-blue) 100%);
+      background-size: 200% 200%;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 26px;
+      color: #0a0e1a;
+      box-shadow: 0 0 40px rgba(0,229,255,0.6);
+      position: relative;
+      animation: logoGradient 4s ease infinite, logoPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes logoGradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0,229,255,0.6); }
+      50% { transform: scale(1.08); box-shadow: 0 0 60px rgba(0,229,255,0.9); }
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      z-index: 1001;
+    }
+
+    .mobile-menu-toggle span {
+      width: 28px;
+      height: 3px;
+      background: var(--neon-blue);
+      border-radius: 3px;
+      transition: all 0.3s;
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(9px, 9px);
+    }
+
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(9px, -9px);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.85;
+      transition: all 0.3s;
+      position: relative;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .nav-links a:not(.btn)::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+      transition: width 0.3s;
+    }
+
+    .nav-links a:not(.btn):hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--neon-blue);
+    }
+
+    .nav-links a.active {
+      color: var(--neon-blue);
+      opacity: 1;
+    }
+
+    .auth-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .dev-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0,229,255,0.06);
+      border: 1px solid rgba(0,229,255,0.18);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dev-toggle:hover {
+      background: rgba(0,229,255,0.12);
+      border-color: rgba(0,229,255,0.35);
+    }
+
+    .dev-toggle input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch {
+      width: 44px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(0,229,255,0.15);
+      border: 1px solid rgba(0,229,255,0.35);
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .switch::after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--neon-blue);
+      position: absolute;
+      top: 50%;
+      left: 3px;
+      transform: translateY(-50%);
+      box-shadow: 0 0 10px rgba(0,229,255,0.5);
+      transition: 0.2s;
+    }
+
+    .dev-toggle input:checked + .switch {
+      background: rgba(184,92,255,0.25);
+      border-color: rgba(184,92,255,0.5);
+    }
+
+    .dev-toggle input:checked + .switch::after {
+      left: 23px;
+      background: var(--neon-purple);
+      box-shadow: 0 0 10px rgba(184,92,255,0.5);
+    }
+
+    .dev-toggle .label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3), transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
+      color: #0a0e1a;
+      box-shadow: 0 0 30px rgba(0,229,255,0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(0,229,255,0.6);
+    }
+
+    .btn-outline {
+      background: rgba(0,229,255,0.1);
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline:hover {
+      background: var(--neon-blue);
+      color: #0a0e1a;
+      transform: translateY(-2px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ========== SECTIONS ========== */
+    .snap-section {
+      min-height: 100vh;
+      position: relative;
+      z-index: 10;
+      padding: 140px 32px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-content {
+      width: min(1280px, 100% - 64px);
+      max-width: 1280px;
+      margin-inline: auto;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .snap-section.revealed .section-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--neon-blue);
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      display: block;
+      text-shadow: 0 0 20px rgba(0,229,255,0.6);
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(34px, 5.5vw, 68px);
+      font-weight: 900;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 50%, var(--neon-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      filter: drop-shadow(0 0 30px rgba(0,229,255,0.3));
+    }
+
+    .section-subtitle {
+      font-size: clamp(17px, 2.2vw, 22px);
+      color: var(--muted);
+      max-width: 750px;
+      margin: 0 auto 70px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* ========== HERO ========== */
+    .hero-content {
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      background: rgba(0,229,255,0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,229,255,0.35);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--neon-blue);
+      margin-bottom: 32px;
+      box-shadow: 0 0 30px rgba(0,229,255,0.2);
+      animation: float-badge 3s ease-in-out infinite;
+    }
+
+    @keyframes float-badge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .hero-badge .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--neon-blue);
+      box-shadow: 0 0 15px var(--neon-blue);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 7.5vw, 88px);
+      line-height: 1.05;
+      margin-bottom: 28px;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      font-size: clamp(17px, 2.7vw, 24px);
+      color: var(--muted);
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========== STATS ========== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 36px;
+      margin-top: 50px;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 36px;
+      background: rgba(15,22,36,0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0,229,255,0.25);
+      border-radius: 24px;
+      transition: all 0.4s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--neon-blue);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,229,255,0.3);
+    }
+
+    .stat-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(40px, 5.5vw, 72px);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 17px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ========== SEARCH SECTION ========== */
+    .search-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 20px 60px 20px 24px;
+      border-radius: 16px;
+      border: 2px solid rgba(0,229,255,0.25);
+      background: rgba(15,22,36,0.8);
+      backdrop-filter: blur(16px);
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 40px rgba(0,229,255,0.3);
+    }
+
+    .search-box input::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      color: var(--neon-blue);
+      pointer-events: none;
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-tag {
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(0,229,255,0.1);
+      border: 1px solid rgba(0,229,255,0.3);
+      color: var(--neon-blue);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-tag:hover,
+    .filter-tag.active {
+      background: var(--neon-blue);
+      color: #0a0e1a;
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0,229,255,0.5);
+    }
+
+    /* ========== APPS GRID ========== */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin-top: 50px;
+    }
+
+    .app-card {
+      background: rgba(15,22,36,0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.4s;
+      position: relative;
+    }
+
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(184,92,255,0.05));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .app-card:hover {
+      border-color: var(--neon-blue);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,229,255,0.3);
+    }
+
+    .app-card:hover::before {
+      opacity: 1;
+    }
+
+    .app-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      color: #0a0e1a;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      z-index: 10;
+      box-shadow: 0 0 20px rgba(0,229,255,0.6);
+    }
+
+    .app-preview {
+      height: 200px;
+      background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(184,92,255,0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .app-content {
+      padding: 24px;
+    }
+
+    .app-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .app-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .app-description {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .app-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: rgba(0,229,255,0.1);
+      border: 1px solid rgba(0,229,255,0.3);
+      color: var(--neon-blue);
+      font-weight: 600;
+    }
+
+    .app-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .app-actions .btn {
+      width: 100%;
+      justify-content: center;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    /* ========== SLIDER ========== */
+    .apps-slider {
+      position: relative;
+      overflow: hidden;
+      margin-top: 50px;
+    }
+
+    .apps-track {
+      display: flex;
+      gap: 24px;
+      will-change: transform;
+    }
+
+    .apps-slider .app-card {
+      flex: 0 0 360px;
+    }
+
+    .slider-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+
+    .slider-btn {
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,229,255,0.35);
+      background: rgba(0,229,255,0.06);
+      color: var(--neon-blue);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 700;
+    }
+
+    .slider-btn:hover {
+      border-color: var(--neon-blue);
+      background: rgba(0,229,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ========== APP DETAILS MODAL ========== */
+    .app-details-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,14,26,0.95);
+      backdrop-filter: blur(20px);
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(15,22,36,0.9);
+      border: 1px solid rgba(0,229,255,0.3);
+      border-radius: 24px;
+      padding: 40px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0,229,255,0.1);
+      border: 1px solid rgba(0,229,255,0.3);
+      color: var(--neon-blue);
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .modal-close:hover {
+      background: var(--neon-blue);
+      color: #0a0e1a;
+      transform: rotate(90deg);
+    }
+
+    /* ========== SECTION SEPARATOR ========== */
+    .section-separator {
+      height: 120px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .separator-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0,229,255,0.5) 50%, transparent 100%);
+    }
+
+    .separator-icon {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      background: rgba(10,14,26,0.9);
+      border: 2px solid rgba(0,229,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      animation: rotate-icon 20s linear infinite;
+    }
+
+    .separator-icon::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      opacity: 0.3;
+      filter: blur(10px);
+      z-index: -1;
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% {
+        opacity: 0.3;
+        filter: blur(10px);
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        filter: blur(15px);
+        transform: scale(1.1);
+      }
+    }
+
+    .separator-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--neon-blue);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    @keyframes rotate-icon {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Orbital Sparks */
+    .orbital-spark {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      box-shadow: 
+        0 0 10px var(--neon-blue),
+        0 0 20px var(--neon-blue),
+        0 0 30px rgba(0,229,255,0.5);
+      animation: orbit 4s linear infinite;
+    }
+
+    .orbital-spark:nth-child(2) {
+      animation-delay: -1s;
+      background: var(--neon-purple);
+      box-shadow: 
+        0 0 10px var(--neon-purple),
+        0 0 20px var(--neon-purple),
+        0 0 30px rgba(184,92,255,0.5);
+    }
+
+    .orbital-spark:nth-child(3) {
+      animation-delay: -2s;
+    }
+
+    .orbital-spark:nth-child(4) {
+      animation-delay: -3s;
+      background: var(--neon-purple);
+      box-shadow: 
+        0 0 10px var(--neon-purple),
+        0 0 20px var(--neon-purple),
+        0 0 30px rgba(184,92,255,0.5);
+    }
+
+    @keyframes orbit {
+      from {
+        transform: rotate(0deg) translateX(45px) rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg) translateX(45px) rotate(-360deg);
+      }
+    }
+
+    /* Random Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkle-fade 2s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(5) {
+      top: 20%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .sparkle:nth-child(6) {
+      top: 25%;
+      right: 25%;
+      animation-delay: 0.5s;
+      background: var(--neon-purple);
+    }
+
+    .sparkle:nth-child(7) {
+      bottom: 20%;
+      left: 25%;
+      animation-delay: 1s;
+    }
+
+    .sparkle:nth-child(8) {
+      bottom: 25%;
+      right: 20%;
+      animation-delay: 1.5s;
+      background: var(--neon-purple);
+    }
+
+    @keyframes sparkle-fade {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+    }
+
+    /* Energy Ring */
+    .energy-ring {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border: 2px solid transparent;
+      border-top-color: var(--neon-blue);
+      border-right-color: var(--neon-purple);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: ring-rotate 3s linear infinite;
+    }
+
+    @keyframes ring-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      position: relative;
+      z-index: 10;
+      background: rgba(10,14,26,0.9);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(0,229,255,0.25);
+      padding: 60px 32px 30px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      .custom-cursor { display: none !important; }
+      .minimap { display: none; }
+      
+      .mobile-menu-toggle { display: flex; }
+      
+      .header-nav {
+        position: fixed;
+        top: 78px;
+        left: 0;
+        right: 0;
+        background: rgba(10,14,26,0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s;
+        border-bottom: 1px solid transparent;
+      }
+      
+      .header-nav.active {
+        max-height: 600px;
+        border-bottom-color: rgba(0,229,255,0.2);
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+      }
+      
+      .nav-links a {
+        width: 100%;
+        padding: 16px;
+        border-bottom: 1px solid rgba(0,229,255,0.1);
+      }
+      
+      .auth-controls {
+        width: 100%;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      
+      .auth-controls .btn,
+      .dev-toggle {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .snap-section {
+        padding: 100px 20px 60px;
+      }
+
+      .snap-section.hero {
+        padding-top: 160px !important;
+      }
+      
+      .apps-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .apps-slider .app-card {
+        flex: 0 0 85vw;
+      }
+      
+      .app-actions {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-content {
+        padding: 24px;
+      }
+
+      .section-separator {
+        height: 80px;
+      }
+
+      .separator-icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .separator-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .orbital-spark {
+        width: 4px;
+        height: 4px;
+      }
+
+      @keyframes orbit {
+        from {
+          transform: rotate(0deg) translateX(35px) rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg) translateX(35px) rotate(-360deg);
+        }
+      }
+
+      .energy-ring {
+        width: 60px;
+        height: 60px;
+      }
+
+      .sparkle {
+        width: 3px;
+        height: 3px;
+      }
+    }
+
+    /* ========== LOADING ========== */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      border: 2px dashed rgba(0,229,255,0.3);
+      border-radius: 20px;
+      color: var(--muted);
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .modal-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .modal-two-col {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    /* ===== FIX: Mobile menu bar under header ===== */
+@media (max-width: 768px){
+  /* Starea INCHISA – fara fundal, fara padding, fara border, nu primește click */
+  #headerNav{
+    max-height: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    opacity: 0 !important;
+    transform: translateY(-6px);
+    pointer-events: none !important;
+    transition:
+      max-height .4s ease,
+      opacity .25s ease,
+      transform .25s ease;
+  }
+
+  /* Starea DESCHISA – apare fundalul si padding-ul doar acum */
+  #headerNav.active{
+    max-height: 600px !important;
+    padding: 20px !important;
+    background: rgba(10,14,26,0.98) !important;
+    border-bottom: 1px solid rgba(0,229,255,0.2) !important;
+    opacity: 1 !important;
+    transform: translateY(0);
+    pointer-events: auto !important;
+  }
+}
+.custom-cursor { display: none !important; }
+body { cursor: auto !important; }
+  </style>
+</head>
+<body>
+  <!-- Floating Gradient Orbs -->
+  <div class="gradient-orb orb-1"></div>
+  <div class="gradient-orb orb-2"></div>
+  <div class="gradient-orb orb-3"></div>
+
+  <!-- Geometric Shapes -->
+  <div class="geometric-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <!-- Scan Lines -->
+  <div class="scan-lines"></div>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="cursor"></div>
+
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Three.js Canvas -->
+  <canvas id="scene-canvas"></canvas>
+  <div id="tech-grid"></div>
+
+  <!-- Minimap -->
+  <div class="minimap" id="minimap">
+    <div class="minimap-dot active" data-section="0" data-label="Acasă"></div>
+    <div class="minimap-dot" data-section="1" data-label="Stats"></div>
+    <div class="minimap-dot" data-section="2" data-label="Search"></div>
+    <div class="minimap-dot" data-section="3" data-label="Apps"></div>
+    <div class="minimap-dot" data-section="4" data-label="Proces"></div>
+  </div>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="header-content">
+      <a href="index.html" class="brand">
+        <div class="logo-box">M</div>
+        <span>MTECH DIGITAL</span>
+      </a>
+      
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="header-nav" id="headerNav">
+        <div class="nav-links">
+          <a href="index.html">Acasă</a>
+          <a href="dezvoltatori.html" class="active">Dezvoltatori</a>
+          <a href="companii.html">Companii</a>
+        </div>
+        
+        <div class="auth-controls">
+          <a href="profil.html" class="btn btn-outline hidden" id="btnProfile">Profil</a>
+          
+          <label class="dev-toggle hidden" id="devToggle">
+            <input type="checkbox" id="isDevChk" />
+            <span class="switch"></span>
+            <span class="label">Dezvoltator</span>
+          </label>
+          
+          <a href="adauga-aplicatie.html" class="btn btn-primary hidden" id="btnAdd">+ Adaugă</a>
+          <a href="admin.html" class="btn btn-outline hidden" id="btnApprove">Approve</a>
+          <button class="btn btn-outline" id="btnLogin">Login</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1: HERO -->
+  <section class="snap-section hero revealed" id="hero" data-section="0">
+    <div class="section-content">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Hub Dezvoltatori Android
+        </div>
+        
+        <h1 class="section-title">Aplicații Demo<br>Pentru Business</h1>
+        
+        <p>
+          Platformă pentru dezvoltatori să publice aplicații demo.<br>
+          Companiile testează, descarcă și solicită personalizări direct.
+        </p>
+        
+        <div class="hero-actions">
+          <a href="#search" class="btn btn-primary">Caută Aplicații</a>
+          <a href="#cum-functioneaza" class="btn btn-outline">Cum Funcționează</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Separator -->
+  <div class="section-separator">
+    <div class="separator-line"></div>
+    <div class="separator-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v12M6 12h12" />
+      </svg>
+      <!-- Orbital Sparks -->
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <!-- Random Sparkles -->
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <!-- Energy Ring -->
+      <div class="energy-ring"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: STATS -->
+  <section class="snap-section" id="stats" data-section="1">
+    <div class="section-content">
+      <span class="section-number">// 01</span>
+      <h2 class="section-title">Statistici Live</h2>
+      <p class="section-subtitle">Ecosistem în creștere cu aplicații și dezvoltatori din România</p>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="statApps" data-target="0">0</span>
+          <span class="stat-label">Aplicații</span>
+        </div>
+        
+        <div class="stat-card">
+          <span class="stat-number" id="statDevs" data-target="0">0</span>
+          <span class="stat-label">Dezvoltatori</span>
+        </div>
+        
+        <div class="stat-card">
+          <span class="stat-number" id="statDownloads" data-target="0">0</span>
+          <span class="stat-label">Downloads</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Separator -->
+  <div class="section-separator">
+    <div class="separator-line"></div>
+    <div class="separator-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v12M6 12h12" />
+      </svg>
+      <!-- Orbital Sparks -->
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <!-- Random Sparkles -->
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <!-- Energy Ring -->
+      <div class="energy-ring"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: SEARCH -->
+  <section class="snap-section" id="search" data-section="2">
+    <div class="section-content">
+      <span class="section-number">// 02</span>
+      <h2 class="section-title">Caută Aplicații</h2>
+      <p class="section-subtitle">Găsește rapid aplicația perfectă pentru business-ul tău</p>
+      
+      <div class="search-container">
+        <div class="search-box">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Caută după nume, categorie, tag..."
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+        
+        <div class="filter-tags" id="filterTags">
+          <span class="filter-tag active" data-filter="all">Toate</span>
+          <span class="filter-tag" data-filter="Business">Business</span>
+          <span class="filter-tag" data-filter="Fintech">Fintech</span>
+          <span class="filter-tag" data-filter="Logistica">Logistică</span>
+          <span class="filter-tag" data-filter="Retail">Retail</span>
+          <span class="filter-tag" data-filter="Sanatate">Sănătate</span>
+        </div>
+      </div>
+      
+      <!-- Search Results -->
+      <div id="searchResults" class="hidden">
+        <h3 style="text-align: center; margin: 40px 0 20px; color: var(--neon-blue); font-family: 'Orbitron', sans-serif;">
+          Rezultate căutare: <span id="searchCount">0</span>
+        </h3>
+        <div class="apps-grid" id="searchGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Separator -->
+  <div class="section-separator">
+    <div class="separator-line"></div>
+    <div class="separator-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v12M6 12h12" />
+      </svg>
+      <!-- Orbital Sparks -->
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <!-- Random Sparkles -->
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <!-- Energy Ring -->
+      <div class="energy-ring"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: APPS SLIDER -->
+  <section class="snap-section" id="apps" data-section="3">
+    <div class="section-content">
+      <span class="section-number">// 03</span>
+      <h2 class="section-title">Aplicații Disponibile</h2>
+      <p class="section-subtitle">Explorează toate aplicațiile demo publicate</p>
+      
+      <div class="apps-slider" id="appsSlider">
+        <div class="apps-track" id="appsTrack">
+          <div class="loading">Se încarcă aplicațiile...</div>
+        </div>
+      </div>
+      
+      <div class="slider-controls">
+        <button class="slider-btn" id="btnPrev">◀ Anterior</button>
+        <button class="slider-btn" id="btnNext">Următor ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Separator -->
+  <div class="section-separator">
+    <div class="separator-line"></div>
+    <div class="separator-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v12M6 12h12" />
+      </svg>
+      <!-- Orbital Sparks -->
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <div class="orbital-spark"></div>
+      <!-- Random Sparkles -->
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <!-- Energy Ring -->
+      <div class="energy-ring"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: CUM FUNCTIONEAZA -->
+  <section class="snap-section" id="cum-functioneaza" data-section="4">
+    <div class="section-content">
+      <span class="section-number">// 04</span>
+      <h2 class="section-title">Cum Funcționează</h2>
+      <p class="section-subtitle">Pentru dezvoltatori și companii</p>
+      
+      <div class="apps-grid">
+        <div class="stat-card">
+          <div style="font-size: 48px; margin-bottom: 20px;">1️⃣</div>
+          <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 12px; color: var(--text);">Dezvoltatori</h3>
+          <p style="color: var(--muted); line-height: 1.6;">
+            Bifează "Dezvoltator" în header, click "Adaugă", încarcă APK, 
+            imagini, video și completează detaliile. După moderare, apare în listă.
+          </p>
+        </div>
+        
+        <div class="stat-card">
+          <div style="font-size: 48px; margin-bottom: 20px;">2️⃣</div>
+          <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 12px; color: var(--text);">Companii</h3>
+          <p style="color: var(--muted); line-height: 1.6;">
+            Explorează aplicațiile, testează demo-uri gratuit, 
+            vezi cod și contact dezvoltatorul direct pentru personalizări.
+          </p>
+        </div>
+        
+        <div class="stat-card">
+          <div style="font-size: 48px; margin-bottom: 20px;">3️⃣</div>
+          <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 12px; color: var(--text);">Colaborare</h3>
+          <p style="color: var(--muted); line-height: 1.6;">
+            Negociază direct cu dezvoltatorul: preț, termene, 
+            funcții custom. Platform transparentă, fără intermediari.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; <span id="year"></span> MTECH Digital - Toate drepturile rezervate</p>
+    <p style="margin-top: 12px;">
+      <a href="index.html" style="color: var(--neon-blue); text-decoration: none;">Acasă</a> • 
+      <a href="dezvoltatori.html" style="color: var(--neon-blue); text-decoration: none;">Dezvoltatori</a> • 
+      <a href="companii.html" style="color: var(--neon-blue); text-decoration: none;">Companii</a>
+    </p>
+  </footer>
+
+  <!-- App Details Modal -->
+  <div class="app-details-modal hidden" id="appDetailsModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="modalInner"></div>
+    </div>
+  </div>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth, GoogleAuthProvider, signInWithPopup,
+      onAuthStateChanged, signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, serverTimestamp,
+      collection, query, where, orderBy, getDocs, limit,
+      updateDoc, increment, addDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyDg_P0xmt22HyVNQbFQqH9ASP68sJ0b2j8",
+      authDomain: "mtechdigital-2449f.firebaseapp.com",
+      projectId: "mtechdigital-2449f",
+      storageBucket: "mtechdigital-2449f.firebasestorage.app"
+    });
+    
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ========== GLOBAL STATE ==========
+    let appsCache = [];
+    let allApps = [];
+    let currentFilter = 'all';
+    let searchTerm = '';
+
+    // ========== UI ELEMENTS ==========
+    const btnLogin = document.getElementById('btnLogin');
+    const btnProfile = document.getElementById('btnProfile');
+    const devToggle = document.getElementById('devToggle');
+    const isDevChk = document.getElementById('isDevChk');
+    const btnAdd = document.getElementById('btnAdd');
+    const btnApprove = document.getElementById('btnApprove');
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const headerNav = document.getElementById('headerNav');
+
+    // ========== AUTH ==========
+    btnLogin.addEventListener('click', async () => {
+      const u = auth.currentUser;
+      if (u) {
+        await signOut(auth);
+        return;
+      }
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    });
+
+    isDevChk.addEventListener('change', async () => {
+      const u = auth.currentUser;
+      if (!u) return;
+      await setDoc(doc(db, 'users', u.uid), {
+        isDeveloper: isDevChk.checked,
+        email: u.email || null,
+        displayName: u.displayName || null,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+      btnAdd.classList.toggle('hidden', !isDevChk.checked);
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      devToggle.classList.add('hidden');
+      btnAdd.classList.add('hidden');
+      btnApprove.classList.add('hidden');
+      btnProfile.classList.add('hidden');
+      
+      if (!user) {
+        btnLogin.textContent = 'Login';
+        return;
+      }
+      
+      btnLogin.textContent = 'Logout';
+      btnProfile.classList.remove('hidden');
+      
+      const us = await getDoc(doc(db, 'users', user.uid));
+      const isDev = us.exists() && us.data()?.isDeveloper === true;
+      isDevChk.checked = !!isDev;
+      devToggle.classList.remove('hidden');
+      if (isDev) btnAdd.classList.remove('hidden');
+
+      try {
+        const cfg = await getDoc(doc(db, 'config', 'admins'));
+        const admins = cfg.exists() ? (cfg.data().emails || []) : [];
+        const isAdmin = !!user.email && admins.includes(user.email);
+        if (isAdmin) btnApprove.classList.remove('hidden');
+      } catch (e) {
+        console.warn('admins cfg read error', e);
+      }
+    });
+
+    // ========== MOBILE MENU ==========
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenuToggle.classList.toggle('active');
+      headerNav.classList.toggle('active');
+    });
+
+    headerNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenuToggle.classList.remove('active');
+        headerNav.classList.remove('active');
+      });
+    });
+
+    // ========== STATS ==========
+    async function loadStats() {
+      try {
+        const qApproved = query(
+          collection(db, 'apps'),
+          where('status', 'in', ['approved', 'APPROVED', 'Approved'])
+        );
+        
+        const snap = await getDocs(qApproved);
+        const appsCount = snap.size;
+        
+        const devSet = new Set();
+        let downloadsTotal = 0;
+        
+        snap.forEach(docSnap => {
+          const a = docSnap.data();
+          if (a?.ownerUid) devSet.add(a.ownerUid);
+          downloadsTotal += Number(a?.downloads || 0);
+        });
+        
+        const devsCount = devSet.size;
+        
+        animateNumber(document.getElementById('statApps'), appsCount);
+        animateNumber(document.getElementById('statDevs'), devsCount);
+        animateNumber(document.getElementById('statDownloads'), downloadsTotal);
+      } catch (err) {
+        console.warn('loadStats failed:', err);
+      }
+    }
+
+    function animateNumber(el, target) {
+      el.dataset.target = target;
+      const duration = 2000;
+      const steps = 60;
+      const inc = target / steps;
+      let cur = 0;
+      let cnt = 0;
+      
+      const timer = setInterval(() => {
+        cnt++;
+        cur += inc;
+        if (cnt >= steps) {
+          el.textContent = String(target);
+          clearInterval(timer);
+        } else {
+          el.textContent = String(Math.floor(cur));
+        }
+      }, duration / steps);
+    }
+
+    // ========== LOAD APPS ==========
+    async function loadApps() {
+      const track = document.getElementById('appsTrack');
+      track.innerHTML = '<div class="loading">Se încarcă aplicațiile...</div>';
+      
+      const qRef = query(
+        collection(db, "apps"),
+        where("status", "==", "approved"),
+        orderBy("createdAt", "desc"),
+        limit(50)
+      );
+      
+      const snap = await getDocs(qRef);
+      
+      if (snap.empty) {
+        track.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📱</div><p>Nicio aplicație publicată încă.</p></div>';
+        return;
+      }
+      
+      appsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allApps = [...appsCache];
+      
+      track.innerHTML = '';
+      appsCache.forEach((app, i) => {
+        track.appendChild(buildCard(app, i));
+      });
+      
+      startSlider();
+    }
+
+    // ========== BUILD CARD ==========
+    function buildCard(app, idx) {
+      const vStr = (app.apk && app.apk.versionName) ? app.apk.versionName : (app.version || '1.0');
+      const tags = Array.isArray(app.tags) ? app.tags : [];
+      const catTag = app.category ? [`#${app.category}`] : [];
+      const tagsHtml = [...catTag, ...tags].map(t => `<span class="tag">${t}</span>`).join('');
+      const isNew = idx < 3;
+      
+      const el = document.createElement('article');
+      el.className = 'app-card';
+      el.innerHTML = `
+        ${isNew ? '<div class="app-badge">🔥 NEW</div>' : ''}
+        <div class="app-preview">
+          ${app.images?.[0] ? `<img src="${app.images[0]}" alt="${app.title}" loading="lazy">` : '📱'}
+        </div>
+        <div class="app-content">
+          <h3>${app.title || 'Aplicație Android'}</h3>
+          <div class="app-meta">
+            <span>👤 ${app.author || 'Anonim'}</span>
+            <span>📦 v${vStr}</span>
+            <span>⬇️ ${app.downloads || 0}</span>
+          </div>
+          <p class="app-description">${app.short || ''}</p>
+          ${tagsHtml ? `<div class="app-tags">${tagsHtml}</div>` : ''}
+          <div class="app-actions">
+            <button class="btn btn-primary" data-act="details" data-id="${app.id}">Vezi detalii</button>
+            ${app.ownerUid ? `<button class="btn btn-outline" data-act="dev" data-id="${app.id}">Profil dev</button>` : ''}
+          </div>
+        </div>
+      `;
+      
+      return el;
+    }
+
+    // ========== SLIDER ==========
+    let sliderX = 0;
+    let sliderPaused = false;
+    let sliderRaf = null;
+    let lastSliderTs = 0;
+    const SLIDER_SPEED = 40;
+
+    function startSlider() {
+      const slider = document.getElementById('appsSlider');
+      const track = document.getElementById('appsTrack');
+      
+      slider.addEventListener('mouseenter', () => sliderPaused = true);
+      slider.addEventListener('mouseleave', () => sliderPaused = false);
+      
+      function tick(ts) {
+        if (!lastSliderTs) lastSliderTs = ts;
+        const dt = ts - lastSliderTs;
+        lastSliderTs = ts;
+        
+        if (!sliderPaused && track.children.length) {
+          sliderX -= (SLIDER_SPEED * dt) / 1000;
+          
+          const firstCard = track.firstElementChild;
+          if (firstCard) {
+            const cardWidth = firstCard.offsetWidth;
+            const gap = 24;
+            
+            if (-sliderX >= cardWidth + gap) {
+              sliderX += cardWidth + gap;
+              track.appendChild(firstCard);
+            }
+          }
+          
+          track.style.transform = `translate3d(${Math.round(sliderX)}px, 0, 0)`;
+        }
+        
+        sliderRaf = requestAnimationFrame(tick);
+      }
+      
+      sliderRaf = requestAnimationFrame(tick);
+    }
+
+    document.getElementById('btnNext').addEventListener('click', () => {
+      const track = document.getElementById('appsTrack');
+      const firstCard = track.firstElementChild;
+      if (firstCard) {
+        const cardWidth = firstCard.offsetWidth + 24;
+        sliderX -= cardWidth;
+        sliderX += cardWidth;
+        track.appendChild(firstCard);
+        track.style.transform = `translate3d(${Math.round(sliderX)}px, 0, 0)`;
+      }
+    });
+
+    document.getElementById('btnPrev').addEventListener('click', () => {
+      const track = document.getElementById('appsTrack');
+      const lastCard = track.lastElementChild;
+      if (lastCard) {
+        const cardWidth = lastCard.offsetWidth + 24;
+        track.insertBefore(lastCard, track.firstElementChild);
+        sliderX -= cardWidth;
+        track.style.transform = `translate3d(${Math.round(sliderX)}px, 0, 0)`;
+      }
+    });
+
+    // ========== SEARCH ==========
+    const searchInput = document.getElementById('searchInput');
+    const filterTags = document.querySelectorAll('.filter-tag');
+    const searchResults = document.getElementById('searchResults');
+    const searchGrid = document.getElementById('searchGrid');
+    const searchCount = document.getElementById('searchCount');
+
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value.toLowerCase().trim();
+      performSearch();
+    });
+
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        filterTags.forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        currentFilter = tag.dataset.filter;
+        performSearch();
+      });
+    });
+
+    function performSearch() {
+      let results = allApps;
+      
+      if (currentFilter !== 'all') {
+        results = results.filter(app => 
+          app.category === currentFilter ||
+          (app.tags && app.tags.includes(currentFilter))
+        );
+      }
+      
+      if (searchTerm) {
+        results = results.filter(app => {
+          const searchableText = [
+            app.title || '',
+            app.short || '',
+            app.description || '',
+            app.author || '',
+            app.category || '',
+            ...(app.tags || [])
+          ].join(' ').toLowerCase();
+          
+          return searchableText.includes(searchTerm);
+        });
+      }
+      
+      if (searchTerm || currentFilter !== 'all') {
+        searchResults.classList.remove('hidden');
+        searchCount.textContent = results.length;
+        
+        searchGrid.innerHTML = '';
+        if (results.length === 0) {
+          searchGrid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Niciun rezultat găsit.</p></div>';
+        } else {
+          results.forEach((app, i) => {
+            searchGrid.appendChild(buildCard(app, i));
+          });
+        }
+      } else {
+        searchResults.classList.add('hidden');
+      }
+    }
+
+    // ========== APP ACTIONS ==========
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-act]');
+      if (!btn) return;
+      
+      const act = btn.dataset.act;
+      const id = btn.dataset.id;
+      const app = allApps.find(a => a.id === id);
+      if (!app) return;
+      
+      if (act === 'details') {
+        showAppDetails(app);
+      } else if (act === 'dev') {
+        window.open(`dev.html?uid=${encodeURIComponent(app.ownerUid)}`, '_blank', 'noopener');
+      }
+    });
+
+    // ========== APP DETAILS MODAL ==========
+    function showAppDetails(app) {
+      const modal = document.getElementById('appDetailsModal');
+      const modalInner = document.getElementById('modalInner');
+      
+      const m = app.media || {};
+      const d = app.demo || {};
+      const apk = app.apk || {};
+      const biz = app.business || {};
+      
+      const images = (m.images && m.images.length ? m.images : (app.images || []));
+      const videoUrl = m.videoUrl || '';
+      const videoMp4 = m.videoMp4 || '';
+      
+      const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+      
+      const fmtBytes = (n) => {
+        if (!n && n !== 0) return '';
+        const units = ['B','KB','MB','GB']; 
+        let i=0, v=n;
+        while (v>=1024 && i<units.length-1){ v/=1024; i++; }
+        return `${v.toFixed((i===0)?0:1)} ${units[i]}`;
+      };
+      
+      const renderList = (arr) => (arr && arr.length)
+        ? `<ul style="margin:0;padding-left:18px;color:var(--muted);">${arr.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` 
+        : `<p style="color:var(--muted);">—</p>`;
+      
+      const renderPerms = (perms) => (perms && perms.length)
+        ? `<ul style="margin:0;padding-left:18px;color:var(--muted);">${perms.map(p=>`<li><span style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);padding:4px 8px;border-radius:6px;font-family:monospace;font-size:12px;color:var(--neon-blue);">${esc(p.name||'')}</span> — ${esc(p.reason||'')}</li>`).join('')}</ul>`
+        : `<p style="color:var(--muted);">—</p>`;
+      
+      const renderAccounts = (acc) => (acc && acc.length)
+        ? `<table style="width:100%;border-collapse:collapse;margin-top:12px;">
+             <thead><tr style="background:rgba(0,229,255,0.05);">
+               <th style="border:1px solid rgba(0,229,255,0.2);padding:10px;text-align:left;color:var(--neon-blue);">Utilizator</th>
+               <th style="border:1px solid rgba(0,229,255,0.2);padding:10px;text-align:left;color:var(--neon-blue);">Parolă</th>
+               <th style="border:1px solid rgba(0,229,255,0.2);padding:10px;text-align:left;color:var(--neon-blue);">Rol</th>
+             </tr></thead>
+             <tbody>
+               ${acc.map(a=>`
+                 <tr style="border-bottom:1px solid rgba(0,229,255,0.1);">
+                   <td style="padding:10px;color:var(--text);">${esc(a.user||'')}</td>
+                   <td style="padding:10px;"><span style="background:rgba(0,229,255,0.08);padding:4px 8px;border-radius:6px;font-family:monospace;color:var(--neon-blue);">${esc(a.pass||'')}</span></td>
+                   <td style="padding:10px;color:var(--muted);">${esc(a.role||'')}</td>
+                 </tr>
+               `).join('')}
+             </tbody>
+           </table>`
+        : `<p style="color:var(--muted);">—</p>`;
+      
+      // Media
+      let mediaHtml = '';
+      if (images && images.length) {
+        mediaHtml += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0;">
+          ${images.map(u=>`<img src="${u}" alt="preview" style="width:100%;border-radius:12px;">`).join('')}
+        </div>`;
+      }
+      if (videoMp4) {
+        mediaHtml += `<video controls src="${esc(videoMp4)}" style="width:100%;border-radius:12px;margin-top:12px;"></video>`;
+      }
+      if (videoUrl) {
+        const yt = /(?:youtu\.be\/|youtube\.com\/watch\?v=)([\w-]{6,})/.exec(videoUrl);
+        mediaHtml += yt 
+          ? `<iframe src="https://www.youtube.com/embed/${yt[1]}" frameborder="0" allowfullscreen style="width:100%;height:400px;border-radius:12px;margin-top:12px;"></iframe>`
+          : `<p style="color:var(--muted);">Video: <a href="${esc(videoUrl)}" target="_blank" style="color:var(--neon-blue);">${esc(videoUrl)}</a></p>`;
+      }
+      
+      // Business
+      const cust = Array.isArray(biz.customization) ? biz.customization : [];
+      const bizHtml = `
+        <div class="modal-two-col" style="margin-top:12px;">
+          <div style="padding:12px;background:rgba(0,229,255,0.05);border-radius:10px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Preț de la (EUR)</div>
+            <div style="font-family:'Orbitron',sans-serif;font-size:20px;color:var(--neon-blue);">${biz.pricingFromEur ?? '—'}</div>
+          </div>
+          <div style="padding:12px;background:rgba(0,229,255,0.05);border-radius:10px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">SLA răspuns (ore)</div>
+            <div style="font-family:'Orbitron',sans-serif;font-size:20px;color:var(--neon-blue);">${biz.slaHours ?? '—'}</div>
+          </div>
+        </div>
+        ${cust.length ? `<div style="margin-top:12px;"><span style="color:var(--muted);">Customizări: </span>${cust.map(c=>`<span style="display:inline-block;padding:4px 10px;margin:4px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:999px;font-size:12px;color:var(--neon-blue);">${esc(c)}</span>`).join('')}</div>` : ''}`;
+      
+      // Tehnic APK
+      const vStr = apk.versionName || app.version || '1.0';
+      const adbCmd = apk.url ? `adb install ${apk.url}` : '';
+      const techHtml = `
+        <div class="modal-two-col" style="margin-top:12px;">
+          <div style="padding:10px;background:rgba(0,229,255,0.05);border-radius:8px;">
+            <div style="font-size:12px;color:var(--muted);">Pachet</div>
+            <div style="font-family:monospace;font-size:13px;color:var(--text);word-break:break-all;">${esc(apk.packageId || '—')}</div>
+          </div>
+          <div style="padding:10px;background:rgba(0,229,255,0.05);border-radius:8px;">
+            <div style="font-size:12px;color:var(--muted);">Versiune</div>
+            <div style="font-family:monospace;font-size:13px;color:var(--text);">v${esc(vStr)} (${apk.versionCode ?? '—'})</div>
+          </div>
+          <div style="padding:10px;background:rgba(0,229,255,0.05);border-radius:8px;">
+            <div style="font-size:12px;color:var(--muted);">Dimensiune</div>
+            <div style="font-family:monospace;font-size:13px;color:var(--text);">${fmtBytes(apk.sizeBytes)}</div>
+          </div>
+          <div style="padding:10px;background:rgba(0,229,255,0.05);border-radius:8px;">
+            <div style="font-size:12px;color:var(--muted);">SHA-256</div>
+            <div style="font-family:monospace;font-size:11px;color:var(--text);word-break:break-all;">${esc(apk.sha256 || '—').substring(0,16)}...</div>
+          </div>
+        </div>
+        ${adbCmd ? `<div style="margin-top:10px;padding:10px;background:rgba(0,229,255,0.05);border-radius:8px;">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Instalare rapidă (ADB):</div>
+          <div style="font-family:monospace;font-size:12px;color:var(--neon-blue);word-break:break-all;">${esc(adbCmd)}</div>
+        </div>` : ''}`;
+      
+      const devLink = app.ownerUid
+        ? `<a class="btn btn-outline" href="dev.html?uid=${esc(app.ownerUid)}" target="_blank" rel="noopener" style="text-decoration:none;">👤 Profil dezvoltator</a>`
+        : '';
+      
+      modalInner.innerHTML = `
+        <h2 style="font-family:'Orbitron',sans-serif;color:var(--neon-purple);margin-bottom:16px;font-size:clamp(24px,4vw,32px);">
+          ${esc(app.title || 'Aplicație Android')}
+        </h2>
+        <p style="color:var(--muted);margin-bottom:24px;">
+          👤 ${esc(app.author || 'Anonim')} • 📦 v${esc(vStr)} 
+          ${app.category ? ' • ' + esc(app.category) : ''}
+          ${app.authorEmail ? ' • ' + esc(app.authorEmail) : ''}
+        </p>
+        <p style="margin-bottom:24px;line-height:1.6;">${esc(app.short || app.description || '')}</p>
+        
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin:24px 0 12px;font-size:20px;">📸 Media</h3>
+        ${mediaHtml || '<p style="color:var(--muted);">Fără media.</p>'}
+        
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin:24px 0 12px;font-size:20px;">🚀 Quick Start</h3>
+        ${renderList(d.quickStart)}
+        
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin:24px 0 12px;font-size:20px;">👥 Conturi Demo</h3>
+        ${renderAccounts(d.testAccounts)}
+        
+        <div class="modal-two-col" style="margin-top:24px;">
+          <div>
+            <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin-bottom:12px;font-size:18px;">✨ Funcționalități</h3>
+            ${renderList(d.features)}
+          </div>
+          <div>
+            <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin-bottom:12px;font-size:18px;">⚠️ Limitări Demo</h3>
+            ${renderList(d.limitations)}
+          </div>
+        </div>
+        
+        <div class="modal-two-col" style="margin-top:24px;">
+          <div>
+            <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin-bottom:12px;font-size:18px;">🔐 Permisiuni</h3>
+            ${renderPerms(d.permissions)}
+          </div>
+          <div>
+            <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin-bottom:12px;font-size:18px;">🌐 Endpoint-uri & Limbi</h3>
+            ${renderList(d.endpoints)}
+            <div style="margin-top:8px;">
+              <span style="color:var(--muted);font-size:13px;">Limbi UI: </span>
+              ${(d.locales && d.locales.length) ? d.locales.map(l=>`<span style="display:inline-block;padding:4px 8px;margin:2px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:999px;font-size:11px;color:var(--neon-blue);">${esc(l)}</span>`).join('') : '<span style="color:var(--muted);">—</span>'}
+            </div>
+          </div>
+        </div>
+        
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin:24px 0 12px;font-size:20px;">⚙️ Tehnic APK</h3>
+        ${techHtml}
+        
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-blue);margin:24px 0 12px;font-size:20px;">💼 Business</h3>
+        ${bizHtml}
+        
+        <div style="margin-top:32px;padding:24px;background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.25);border-radius:16px;">
+          <h3 style="font-family:'Orbitron',sans-serif;color:var(--neon-purple);margin:0 0 16px;font-size:20px;">📧 Contactează dezvoltatorul</h3>
+          <form id="contactForm" style="display:flex;flex-direction:column;gap:12px;">
+            <div class="modal-two-col">
+              <input id="cEmail" type="email" required placeholder="Emailul tău *" style="padding:12px;border-radius:10px;border:1px solid rgba(0,229,255,0.25);background:rgba(15,22,36,0.8);color:var(--text);font-size:14px;" />
+              <input id="cName" placeholder="Nume/Companie" style="padding:12px;border-radius:10px;border:1px solid rgba(0,229,255,0.25);background:rgba(15,22,36,0.8);color:var(--text);font-size:14px;" />
+            </div>
+            <textarea id="cMsg" rows="4" required placeholder="Mesaj *" style="padding:12px;border-radius:10px;border:1px solid rgba(0,229,255,0.25);background:rgba(15,22,36,0.8);color:var(--text);font-size:14px;resize:vertical;"></textarea>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <button class="btn btn-primary" type="submit" style="text-decoration:none;">Trimite</button>
+              ${app.authorEmail ? `<a class="btn btn-outline" href="mailto:${esc(app.authorEmail)}?subject=${encodeURIComponent('[MTECH] Interesat de ' + (app.title||''))}" style="text-decoration:none;">📧 Email direct</a>` : ''}
+              ${devLink}
+              ${(app.apkUrl || app.apkPath) ? `<button type="button" id="detailsDownload" class="btn btn-outline" style="text-decoration:none;">⬇️ Descarcă APK</button>` : ''}
+              <span id="cState" style="color:var(--muted);font-size:13px;"></span>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+      
+      // Contact form handler
+      const f = document.getElementById('contactForm');
+      const cState = document.getElementById('cState');
+      f.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('cEmail').value.trim();
+        const name = document.getElementById('cName').value.trim();
+        const msg = document.getElementById('cMsg').value.trim();
+        
+        if (!email || !msg) {
+          cState.textContent = 'Completează email și mesaj.';
+          return;
+        }
+        
+        if (!auth.currentUser) {
+          try {
+            await signInWithPopup(auth, new GoogleAuthProvider());
+          } catch(err) {
+            cState.textContent = 'Te rog conectează-te ca să poți trimite mesajul.';
+            return;
+          }
+        }
+        
+        try {
+          cState.textContent = 'Se trimite...';
+          await addDoc(collection(db, 'contactRequests'), {
+            appId: app.id,
+            appTitle: app.title || null,
+            developerEmail: app.authorEmail || null,
+            fromEmail: email,
+            fromName: name || null,
+            message: msg,
+            createdAt: serverTimestamp()
+          });
+          cState.textContent = '✅ Mesaj trimis.';
+          f.reset();
+        } catch(err) {
+          console.error(err);
+          cState.textContent = 'Eroare la trimitere.';
+        }
+      });
+      
+      // Download button
+      const downloadBtn = document.getElementById('detailsDownload');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', async () => {
+          await incrementDownloadThenOpen(app);
+        });
+      }
+    }
+
+    document.getElementById('modalClose').addEventListener('click', () => {
+      document.getElementById('appDetailsModal').classList.add('hidden');
+    });
+
+
+  async function resolveApkUrl(app) {
+    // 1) daca exista deja url public, foloseste-l
+    if (app.apkUrl) return app.apkUrl;
+
+    // 2) altfel daca avem path in Storage (ex: "apks/myapp-1.0.apk"), ia un downloadURL
+    if (app.apkPath) {
+      const r = ref(storage, app.apkPath);
+      return await getDownloadURL(r);
+    }
+
+    // 3) fallback: daca apk e subcamp obiect { path/url }
+    if (app.apk?.url) return app.apk.url;
+    if (app.apk?.path) {
+      const r = ref(storage, app.apk.path);
+      return await getDownloadURL(r);
+    }
+
+    return null;
+  }
+
+  async function incrementDownloadThenOpen(app) {
+    const newTab = window.open("", "_blank");
+    if (!newTab) { alert("Popup blocat. Te rog permite pop-ups."); return; }
+
+    try {
+      // increment public; daca pica, ignoram si continuam
+      try {
+        await updateDoc(doc(db, "apps", app.id), { downloads: increment(1) });
+      } catch (e) {
+        console.warn("downloads +1 failed (ignored)", e);
+      }
+
+      const url = await resolveApkUrl(app);
+      if (url) {
+        newTab.location = url;
+      } else {
+        newTab.close();
+        alert("Nu exista nici apkUrl, nici apkPath pentru aceasta aplicatie.");
+      }
+    } catch (e) {
+      console.error(e);
+      newTab.close();
+      alert("Eroare la descarcare.");
+    }
+  }
+
+
+
+
+    // ========== INIT ==========
+    loadStats();
+    loadApps();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    // ========== THREE.JS PARTICLES ==========
+    const IS_MOBILE = window.innerWidth <= 768;
+    const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!REDUCE_MOTION) {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 50;
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('scene-canvas'),
+        alpha: true,
+        antialias: false
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const particleCount = IS_MOBILE ? 80 : 500;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      const sizes = new Float32Array(particleCount);
+      const velocities = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        
+        positions[i3] = (Math.random() - 0.5) * 120;
+        positions[i3 + 1] = Math.random() * -80 - 20;
+        positions[i3 + 2] = (Math.random() - 0.5) * 60;
+
+        velocities.push({
+          x: (Math.random() - 0.5) * 0.015,
+          y: Math.random() * 0.05 + 0.03,
+          z: (Math.random() - 0.5) * 0.015
+        });
+
+        const colorType = Math.random();
+        if (colorType < 0.45) {
+          colors[i3] = 0;
+          colors[i3 + 1] = 0.9;
+          colors[i3 + 2] = 1;
+        } else if (colorType < 0.9) {
+          colors[i3] = 0.72;
+          colors[i3 + 1] = 0.36;
+          colors[i3 + 2] = 1;
+        } else {
+          colors[i3] = 1;
+          colors[i3 + 1] = 0;
+          colors[i3 + 2] = 0.5;
+        }
+
+        sizes[i] = IS_MOBILE ? (Math.random() * 0.6 + 0.2) : (Math.random() * 1.2 + 0.3);
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+      const material = new THREE.PointsMaterial({
+        size: 0.6,
+        sizeAttenuation: true,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        map: createCircleTexture()
+      });
+
+      function createCircleTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext('2d');
+        const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 32, 32);
+        const texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+      }
+
+      const particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        const positions = particles.geometry.attributes.position.array;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const i3 = i * 3;
+          
+          positions[i3] += velocities[i].x;
+          positions[i3 + 1] += velocities[i].y;
+          positions[i3 + 2] += velocities[i].z;
+
+          if (positions[i3 + 1] > 60) {
+            positions[i3] = (Math.random() - 0.5) * 120;
+            positions[i3 + 1] = -60;
+            positions[i3 + 2] = (Math.random() - 0.5) * 60;
+          }
+
+          if (Math.abs(positions[i3]) > 60) positions[i3] *= -0.9;
+          if (Math.abs(positions[i3 + 2]) > 30) positions[i3 + 2] *= -0.9;
+        }
+
+        particles.geometry.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // ========== CUSTOM CURSOR (Desktop only) ==========
+    if (!IS_MOBILE && !REDUCE_MOTION) {
+      const cursor = document.getElementById('cursor');
+      let mouseX = 0, mouseY = 0;
+      let cursorX = 0, cursorY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      document.querySelectorAll('a, button, .app-card, .stat-card, .filter-tag').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+
+      function updateCursor() {
+        const dx = mouseX - cursorX;
+        const dy = mouseY - cursorY;
+        
+    cursorX += (mouseX - cursorX) * 0.55;
+    cursorY += (mouseY - cursorY) * 0.55;
+        
+            cursor.style.left = cursorX + 'px';
+    cursor.style.top = cursorY + 'px';
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+    }
+
+    // ========== SCROLL PROGRESS ==========
+    const scrollProgress = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const winScroll = window.scrollY;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = winScroll / height;
+      scrollProgress.style.transform = `scaleX(${scrolled})`;
+    });
+
+    // ========== HEADER SCROLL ==========
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // ========== INTERSECTION OBSERVER ==========
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const sectionIndex = entry.target.dataset.section;
+        
+        if (entry.isIntersecting) {
+          if (!entry.target.classList.contains('revealed')) {
+            entry.target.classList.add('revealed');
+            
+            const counters = entry.target.querySelectorAll('[data-target]');
+            counters.forEach(counter => {
+              if (!counter.classList.contains('counted')) {
+                counter.classList.add('counted');
+                const target = parseInt(counter.dataset.target);
+                animateCounter(counter, target);
+              }
+            });
+          }
+          updateMinimap(sectionIndex);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.snap-section').forEach(section => {
+      revealObserver.observe(section);
+    });
+
+    function animateCounter(el, target) {
+      const duration = 2000;
+      const steps = 60;
+      const inc = target / steps;
+      let cur = 0;
+      let cnt = 0;
+      
+      const timer = setInterval(() => {
+        cnt++;
+        cur += inc;
+        if (cnt >= steps) {
+          el.textContent = String(target);
+          clearInterval(timer);
+        } else {
+          el.textContent = String(Math.floor(cur));
+        }
+      }, duration / steps);
+    }
+
+    // ========== MINIMAP ==========
+    const minimapDots = document.querySelectorAll('.minimap-dot');
+    const sections = document.querySelectorAll('.snap-section');
+
+    minimapDots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const sectionIndex = dot.dataset.section;
+        sections[sectionIndex].scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    function updateMinimap(activeIndex) {
+      minimapDots.forEach(dot => {
+        if (dot.dataset.section === activeIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

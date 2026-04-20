@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact • MTECH Digital</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --deep-1:#0b1220; --deep-2:#0f1628; --neon-blue:#00e5ff; --neon-purple:#b85cff;
+      --text:#e5f6ff; --muted:#9fb1c9; --ring:rgba(0,229,255,.35);
+      --card:rgba(255,255,255,.04); --card-b:rgba(255,255,255,.10); --max:900px; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--deep-1),var(--deep-2));color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:#a3cef1;text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:28px 20px 40px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+    .brand{font-family:Orbitron, sans-serif; font-weight:800; letter-spacing:.02em}
+    nav a{opacity:.9;margin-left:14px}
+    h1{font:800 clamp(28px,3.8vw,44px)/1.15 Orbitron, Inter, sans-serif; letter-spacing:-.01em; text-align:left; margin:18px 0 8px}
+    .lead{opacity:.9;margin:0 0 18px;max-width:72ch}
+    .card{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:18px;margin:16px 0}
+    form{display:grid;gap:12px;margin-top:10px}
+    label{font-weight:600}
+    input,textarea{
+      width:100%; padding:12px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.02);
+      color:var(--text); font:600 14px/1.35 Inter,system-ui,sans-serif; outline:none;
+    }
+    input:focus,textarea:focus{ border-color:var(--ring); box-shadow:0 0 0 4px rgba(0,229,255,.07) }
+    textarea{min-height:140px; resize:vertical}
+    .actions{display:flex;gap:10px;justify-content:flex-start;margin-top:8px}
+    .btn{
+      --padY:10px; --padX:16px; display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:var(--padY) var(--padX); font-weight:800; letter-spacing:.02em;
+      color:#eafaff; border-radius:14px; border:1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(0,229,255,.12), rgba(184,92,255,.10));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 8px 24px rgba(0,0,0,.25);
+      cursor:pointer; transition:transform .18s ease, box-shadow .25s ease, border-color .2s ease;
+    }
+    .btn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.32); box-shadow:0 18px 50px rgba(0,229,255,.12), 0 0 40px rgba(184,92,255,.10), inset 0 1px 0 rgba(255,255,255,.06) }
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media (max-width: 760px){ .grid{grid-template-columns:1fr} }
+    footer{margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06);opacity:.9;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--card-b);background:rgba(255,255,255,.03)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">MTECH DIGITAL</div>
+      <nav>
+        <a href="index.html">Acasă</a>
+        <a href="companii.html">Companii</a>
+        <a href="dezvoltatori.html">Dezvoltatori</a>
+      </nav>
+    </header>
+
+    <h1>Contact</h1>
+    <p class="lead">Ai o întrebare despre licențe, demo-uri sau proiecte la cheie? Scrie-ne rapid prin formular.</p>
+
+    <div class="card">
+      <form id="contactForm" action="mailto:mtechdigital.noreply@gmail.com" method="post" enctype="text/plain">
+        <div class="grid">
+          <div>
+            <label for="name">Nume</label>
+            <input id="name" name="Nume" placeholder="Numele tău" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="Email" type="email" placeholder="adresa@exemplu.com" required>
+          </div>
+        </div>
+        <div>
+          <label for="subject">Subiect</label>
+          <input id="subject" name="Subiect" placeholder="Ex: Ofertă licență ERP + OCR">
+        </div>
+        <div>
+          <label for="message">Mesaj</label>
+          <textarea id="message" name="Mesaj" placeholder="Scrie-ne detalii utile despre proiectul tău…" required></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn" type="submit">Trimite</button>
+          <a class="btn" href="mailto:mtechdigital.noreply@gmail.com">Deschide email</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Date firmă & suport</h2>
+      <p><strong>Email:</strong> <a href="mailto:mtechdigital.noreply@gmail.com">mtechdigital.noreply@gmail.com</a></p>
+      <p><strong>Program:</strong> Luni–Vineri, 09:00–18:00 (EET)</p>
+    </div>
+
+    <footer>
+      <div class="pill">© <span id="year"></span> MTECH Digital</div>
+      <div>
+        <a href="terms.html">Termeni</a> ·
+        <a href="privacy.html">Confidențialitate</a> ·
+        <a href="contact.html">Contact</a>
+      </div>
+    </footer>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

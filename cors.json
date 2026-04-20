@@ -1,0 +1,14 @@
+[
+  {
+    "origin": [
+      "https://mtechdigital.ro",
+      "https://mtechdigital-2449f.web.app",
+      "http://localhost:5000",
+      "http://127.0.0.1:5000",
+      "http://localhost:5173"
+    ],
+    "method": ["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH"],
+    "responseHeader": ["Content-Type", "Authorization", "x-goog-resumable"],
+    "maxAgeSeconds": 3600
+  }
+]

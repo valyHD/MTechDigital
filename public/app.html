@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <title>Detalii aplicație • Mtech Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <style>
+    :root{
+      --deep-1:#08182c; --deep-2:#0a1b33;
+      --neon-blue:#00e5ff; --neon-purple:#b85cff;
+      --text:#e5f6ff; --muted:#b9d7eb; --card:#0b1f3a; --ring:rgba(0,229,255,.25);
+      --max:1100px;
+    }
+    *{box-sizing:border-box} html,body{margin:0;background:linear-gradient(180deg,var(--deep-1),var(--deep-2));color:var(--text);font-family:ui-sans-serif,system-ui}
+    a{color:var(--neon-blue);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:16px 24px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{height:28px}
+    .back{opacity:.85}
+    h1{font-size:clamp(24px,3.2vw,36px);margin:.4rem 0}
+    .meta{color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+    .layout{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-top:16px}
+    @media (max-width: 900px){ .layout{grid-template-columns:1fr} }
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
+    .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    @media (max-width: 680px){ .gallery{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    .gallery img{width:100%;height:180px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.08)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border:1px solid var(--ring);border-radius:12px;background:linear-gradient(90deg,rgba(0,229,255,.12),rgba(184,92,255,.12));color:var(--text)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    pre{overflow:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08);padding:12px}
+    form .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width: 680px){ form .row{grid-template-columns:1fr} }
+    label{font-size:13px;opacity:.9}
+    input,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text)}
+    textarea{min-height:120px;resize:vertical}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="brand">
+      <img src="./assets/img/logo.svg" alt="Logo" />
+      <span>Mtech Digital</span>
+    </div>
+    <a class="back" href="dezvoltatori.html">← Înapoi la listă</a>
+  </header>
+
+  <main class="wrap" id="appRoot" aria-live="polite">
+    <div class="card">Se încarcă detaliile…</div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const id = qs.get('id');
+
+    async function load(){
+      try{
+        const res = await fetch('./data/apps.json', {cache:'no-store'});
+        const list = await res.json();
+        const app = list.find(a => a.id === id);
+        const root = document.getElementById('appRoot');
+
+        if(!app){ root.innerHTML = '<div class="card">Aplicația nu a fost găsită.</div>'; return; }
+
+        // fetch cod (opțional)
+        let code = '';
+        if (app.codeUrl){
+          try{
+            const codeRes = await fetch(app.codeUrl, {cache:'no-store'});
+            code = await codeRes.text();
+          }catch{ code = '// Nu s-a putut încărca fișierul de cod.'; }
+        }
+
+        root.innerHTML = `
+          <section class="layout">
+            <article class="card">
+              <h1>${app.title}</h1>
+              <div class="meta">
+                <span>Autor: ${app.author||'—'}</span>
+                <span>•</span>
+                <span>Versiune: ${app.version||'—'}</span>
+                ${app.repoUrl ? `<span>•</span><a href="${app.repoUrl}" target="_blank" rel="noopener">Repo</a>` : ''}
+              </div>
+              <p style="margin:.6rem 0 1rem;opacity:.9">${app.short||''}</p>
+
+              ${app.images?.length ? `
+                <div class="gallery">
+                  ${app.images.map(src=>`<img src="${src}" alt="Screenshot">`).join('')}
+                </div>` : ''}
+
+              <div style="margin-top:14px">${app.description||''}</div>
+
+              <div class="actions" style="margin-top:14px">
+                ${app.apkUrl ? `<a class="btn" href="${app.apkUrl}" download>Descarcă demo (APK)</a>` : ''}
+                ${app.repoUrl ? `<a class="btn" href="${app.repoUrl}" target="_blank" rel="noopener">Vezi repo</a>` : ''}
+              </div>
+
+              ${code ? `
+                <h3 style="margin:18px 0 8px">Fragment de cod</h3>
+                <pre><code class="language-kotlin"></code></pre>` : ''}
+            </article>
+
+            <aside class="card">
+              <h2 style="margin:.2rem 0 .8rem;font-size:20px">Cere ofertă de personalizare</h2>
+              <form id="offerForm">
+                <input type="hidden" name="app_id" value="${app.id}">
+                <div class="row">
+                  <p><label>Nume <br><input name="nume" required></label></p>
+                  <p><label>Companie <br><input name="companie"></label></p>
+                </div>
+                <div class="row">
+                  <p><label>Email <br><input type="email" name="email" required></label></p>
+                  <p><label>Telefon <br><input name="telefon"></label></p>
+                </div>
+                <p><label>Cerințe / funcționalități dorite <br><textarea name="mesaj" required></textarea></label></p>
+                <div class="row">
+                  <p><label>Buget estimat (€) <br><input name="buget"></label></p>
+                  <p><label>Termen dorit <br><input name="termen" placeholder="ex: 30 zile"></label></p>
+                </div>
+                <button class="btn" type="submit">Trimite</button>
+                <p style="font-size:12px;opacity:.7;margin-top:8px">* Fără backend? Formularul va deschide un email precompletat.</p>
+              </form>
+            </aside>
+          </section>
+        `;
+
+        // pune codul în <code> și colorează
+        if (code){
+          const el = root.querySelector('pre code');
+          el.textContent = code;
+          try{ hljs.highlightElement(el); }catch{}
+        }
+
+        // formular: mailto fallback (schimbă cu adresa ta!)
+        const salesEmail = 'sales@firma-ta.ro'; // ← înlocuiește cu adresa ta
+        root.querySelector('#offerForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const f = e.currentTarget;
+          const data = Object.fromEntries(new FormData(f).entries());
+          const subject = encodeURIComponent(`Cerere ofertă — ${app.title} (${app.id})`);
+          const body = encodeURIComponent(
+`Aplicație: ${app.title} (${app.id})
+Nume: ${data.nume}
+Companie: ${data.companie||'-'}
+Email: ${data.email}
+Telefon: ${data.telefon||'-'}
+Buget: ${data.buget||'-'}
+Termen: ${data.termen||'-'}
+
+Cerințe:
+${data.mesaj}`);
+
+          location.href = `mailto:${salesEmail}?subject=${subject}&body=${body}`;
+        });
+      }catch(err){
+        document.getElementById('appRoot').innerHTML = '<div class="card">Eroare la încărcare.</div>';
+        console.error(err);
+      }
+    }
+
+    load();
+  </script>
+</body>
+</html>

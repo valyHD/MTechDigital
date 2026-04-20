@@ -1,0 +1,219 @@
+/* ========== Brand ========== */
+.brand {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 18px;
+  color: #dff9ff;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.20), rgba(184, 92, 255, 0.16));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.2), 0 0 60px rgba(0, 229, 255, 0.15);
+  transition: all 0.3s ease;
+  animation: brandPulse 3s ease-in-out infinite;
+}
+
+@keyframes brandPulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0, 229, 255, 0.2), 0 0 60px rgba(0, 229, 255, 0.15);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(0, 229, 255, 0.35), 0 0 80px rgba(0, 229, 255, 0.25);
+  }
+}
+
+.brand:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.3), 0 0 80px rgba(0, 229, 255, 0.2);
+}
+
+.brand .logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(from 140deg, var(--neon-blue), #6a4bff, var(--neon-blue));
+  background-size: 200% 200%;
+  animation: gradientSpin 4s ease infinite;
+  color: #06101c;
+  font-weight: 900;
+  font-family: "Orbitron", sans-serif;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+}
+
+@keyframes gradientSpin {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ========== Side Copy ========== */
+.side-copy {
+  position: fixed;
+  z-index: 3;
+  top: 50%;
+  left: 3.5vw;
+  max-width: 42ch;
+  transform: translateY(-50%) translateX(-20px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  padding: 14px 16px;
+  border-radius: 14px;
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  background: linear-gradient(180deg, rgba(10, 14, 26, .65) 0%, rgba(10, 14, 26, .35) 100%);
+  border: 1px solid rgba(0,229,255,.22);
+  box-shadow: 0 6px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.side-copy.right {
+  left: auto;
+  right: 3.5vw;
+  text-align: right;
+  transform: translateY(-50%) translateX(20px);
+}
+
+.side-copy.show {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.side-copy h1 {
+  font-family: "Orbitron", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 2.1vw, 30px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  text-wrap: balance;
+}
+
+.side-copy h3 {
+  font-size: clamp(13px, 1.2vw, 18px);
+  line-height: 1.45;
+  font-weight: 700;
+  opacity: .92;
+  margin: 2px 0 8px;
+}
+
+.side-copy p {
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.55;
+  letter-spacing: .005em;
+  margin: 0 0 8px;
+}
+
+@media (max-width: 980px) {
+  .side-copy { display: none; }
+}
+
+/* ========== Hero Intro ========== */
+.hero-intro {
+  position: fixed;
+  left: 50%;
+  bottom: 4.5vh;
+  transform: translateX(-50%);
+  z-index: 6;
+  text-align: center;
+  width: min(1100px, 92vw);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.hero-intro .wrap {
+  display: inline-block;
+  padding: 12px 16px 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(0, 229, 255, 0.06), rgba(184, 92, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 44px rgba(0, 229, 255, 0.18), inset 0 0 30px rgba(0, 229, 255, 0.06);
+}
+
+.hero-intro.is-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+  filter: blur(1px);
+}
+
+.hero-intro h1 {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.4rem;
+  font-size: clamp(14px, 1.4vw, 40px);
+  text-shadow: 0 0 18px rgba(0, 229, 255, 0.24);
+}
+
+.hero-intro p {
+  margin: 0;
+  opacity: 0.95;
+  font-size: clamp(10px, 1.6vw, 18px);
+}
+
+/* ========== Top CTA ========== */
+.top-cta {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  display: flex;
+  gap: 10px;
+  z-index: 100000;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  pointer-events: auto;
+}
+
+.top-cta.is-hidden {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+/* ========== Stage ========== */
+.stage {
+  position: relative;
+  z-index: 1;
+}
+
+.stage .sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.stage .spacer {
+  height: 300vh;
+}
+
+#webgl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  touch-action: pan-y;
+}
+
+body.lock-scroll {
+  overflow: hidden;
+}
+
+body:not(.portal-open):not(.modal-open) #stage {
+  min-height: auto !important;
+  height: auto !important;
+}

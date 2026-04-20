@@ -1,0 +1,93 @@
+/* ========== Advanced Particles ========== */
+#advanced-particles {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.adv-particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: floatParticle linear infinite;
+  filter: blur(1px);
+}
+
+.adv-particle.blue {
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.8), rgba(0, 229, 255, 0) 70%);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+}
+
+.adv-particle.purple {
+  background: radial-gradient(circle, rgba(184, 92, 255, 0.8), rgba(184, 92, 255, 0) 70%);
+  box-shadow: 0 0 20px rgba(184, 92, 255, 0.6);
+}
+
+.adv-particle.white {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  animation: floatParticle linear infinite, twinkleParticle 3s ease-in-out infinite;
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(0);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-20vh) translateX(var(--drift, 0)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes twinkleParticle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+/* ========== Tech Grid Overlay ========== */
+#tech-grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridDrift 25s linear infinite;
+}
+
+@keyframes gridDrift {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(60px) translateX(60px); }
+}
+
+/* ========== Floating Orbs ========== */
+.floating-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.35;
+  pointer-events: none;
+  animation: floatOrb 20s ease-in-out infinite;
+  z-index: -1;
+}
+
+.floating-orb.blue {
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.7), transparent);
+}
+
+.floating-orb.purple {
+  background: radial-gradient(circle, rgba(184, 92, 255, 0.7), transparent);
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -60px) scale(1.3); }
+  50% { transform: translate(-40px, -100px) scale(0.9); }
+  75% { transform: translate(60px, -50px) scale(1.2); }
+}
