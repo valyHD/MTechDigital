@@ -1343,11 +1343,13 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="css/cyberpunk-overdrive.css">
 </head>
 <body>
 
   <div class="scroll-progress"></div>
   <div class="scene-bg" aria-hidden="true">
+    <div id="cyberpunkLayer" class="cyberpunk-layer"></div>
     <canvas id="starsCanvas"></canvas>
     <div class="aurora a1"></div>
     <div class="aurora a2"></div>
@@ -1387,7 +1389,7 @@
   </div>
 
   <!-- HERO -->
-  <section id="hero" class="story-section">
+  <section id="hero" class="story-section" data-cyber-theme="neon-core">
     <div class="hero-bg">
       <div class="hero-glow"></div>
       <div class="hero-grid"></div>
@@ -1454,7 +1456,7 @@
   </div>
 
   <!-- SERVICES -->
-  <section id="servicii" class="story-section">
+  <section id="servicii" class="story-section" data-cyber-theme="teal-grid">
     <div class="container">
       <div class="section-head reveal">
         <span class="section-label">// Ce facem</span>
@@ -1498,7 +1500,7 @@
   </section>
 
   <!-- PORTFOLIO -->
-  <section id="portfolio" class="story-section">
+  <section id="portfolio" class="story-section" data-cyber-theme="violet-circuit">
     <div class="container">
       <div class="section-head reveal">
         <span class="section-label">// Portofoliu</span>
@@ -1568,7 +1570,7 @@
   </section>
 
   <!-- PROCESS -->
-  <section id="proces" class="story-section">
+  <section id="proces" class="story-section" data-cyber-theme="amber-flow">
     <div class="container">
       <div class="section-head reveal">
         <span class="section-label">// Cum lucrăm</span>
@@ -1613,7 +1615,7 @@
   </section>
 
   <!-- TECH STACK -->
-  <section id="tehnologii" class="story-section">
+  <section id="tehnologii" class="story-section" data-cyber-theme="matrix-tech">
     <div class="container">
       <div class="section-head reveal">
         <span class="section-label">// Stack Tehnologic</span>
@@ -1657,7 +1659,7 @@
   </section>
 
   <!-- TESTIMONIALS -->
-  <section id="testimoniale" class="story-section">
+  <section id="testimoniale" class="story-section" data-cyber-theme="pink-wave">
     <div class="container">
       <div class="section-head reveal">
         <span class="section-label">// Feedback Clienți</span>
@@ -1703,7 +1705,7 @@
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="story-section">
+  <section id="faq" class="story-section" data-cyber-theme="blue-data">
     <div class="container">
       <div class="section-head reveal">
         <span class="section-label">// FAQ</span>
@@ -1776,7 +1778,7 @@
   </section>
 
   <!-- CTA -->
-  <section id="cta" class="story-section">
+  <section id="cta" class="story-section" data-cyber-theme="quantum-finish">
     <div class="container">
       <div class="cta-box reveal">
         <span class="section-label" style="display:block; margin-bottom:20px;">// Hai să construim ceva mișto</span>
@@ -2016,5 +2018,6 @@
       window.addEventListener('beforeunload', () => window.cancelAnimationFrame(animationFrame), { once: true });
     }
   </script>
+  <script src="js/cyberpunk-overdrive.js"></script>
 </body>
 </html>
